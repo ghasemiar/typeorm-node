@@ -11,18 +11,19 @@ export class User {
     name: string;
 
     @Column({ type: "varchar" })
+    username: string;
+
+    @Column({ type: "varchar" })
     password: string;
 
     @Column({ type: "varchar" })
     email: string;
-
-    @Column({
-        type: "enum",
-        enum: ["admin", "ghost"],
-        default: "ghost"
-    })
-    rule: UserRoleType;
-
+    // @Column({
+    //     type: "enum",
+    //     enum: ["admin", "ghost"],
+    //     default: "ghost"
+    // })
+    // rule: UserRoleType;
     @OneToMany(() => Product, (product) => product.user, {
         cascade: true,
     })

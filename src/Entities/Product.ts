@@ -1,4 +1,4 @@
-import {Column, Entity, ManyToOne, PrimaryGeneratedColumn} from "typeorm";
+import {Column, Entity, JoinTable, ManyToOne, PrimaryGeneratedColumn} from "typeorm";
 import { User} from "./User";
 import {Category} from "./Category";
 
@@ -20,8 +20,10 @@ export class Product {
     price: number;
 
     @ManyToOne(() => Category, (category) => category.products)
+    @JoinTable()
     category: Category;
 
     @ManyToOne(() => User, (user) => user.products)
+    @JoinTable()
     user: User;
 }

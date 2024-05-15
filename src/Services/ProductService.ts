@@ -1,17 +1,18 @@
-import {IAttr,Attr} from '..//Attr';
+import {Product} from '../Entities/Product';
 import { myDataSource} from "../Database/Connection";
-export const createAttrService = async (data: IAttr): Promise<{ data:string|IAttr,code:number }> => {
-    const attr = await myDataSource.getRepository(Attr).create(data)
-    const results = await myDataSource.getRepository(Attr).save(attr)
+import {ProductCreateDTO, ProductUpdateDTO} from "../Validations/ProductValidation";
+export const createProductService = async (data: ProductCreateDTO): Promise<{ data:any,code:number }> => {
+    const product = myDataSource.getRepository(Product).create(data)
+    const results = await myDataSource.getRepository(Product).save(product)
     return {data:results,code:201}
 };
-export const getAttrsService = async (): Promise<{ data:string|IAttr[],code:number }> => {
-    const result = await myDataSource.getRepository(Attr).find()
+export const getProductsService = async (): Promise<{ data:any,code:number }> => {
+    const result = await myDataSource.getRepository(Product).find()
     return {data:result,code:200}
 };
-export const getAttrService = async (id:number): Promise<{ data:string|IAttr,code:number }> => {
+export const getProductService = async (id:number): Promise<{ data:any,code:number }> => {
 
-    const results = await myDataSource.getRepository(Attr).findOneBy({
+    const results = await myDataSource.getRepository(Product).findOneBy({
         id:id
     })
     if (!results) {
@@ -19,21 +20,21 @@ export const getAttrService = async (id:number): Promise<{ data:string|IAttr,cod
     }
     return {data:results,code:200}
 };
-export const updateAttrService = async (id:number,data:IAttr): Promise<{ data:string|IAttr,code:number }> => {
+export const updateProductService = async (id:number,data:ProductUpdateDTO): Promise<{ data:any,code:number }> => {
 
-    const attr = await myDataSource.getRepository(Attr).findOneBy({
+    const product = await myDataSource.getRepository(Product).findOneBy({
         id: id,
     })
-    if (!attr) {
+    if (!product) {
         return {data:"not found",code:404};
     }
-    myDataSource.getRepository(Attr).merge(attr, data)
-    const results = await myDataSource.getRepository(Attr).save(attr)
+    myDataSource.getRepository(Product).merge(product, data)
+    const results = await myDataSource.getRepository(Product).save(product)
     return {data:results,code:200}
 };
-export const deleteAttrService = async (id:number): Promise<{ data:string|IAttr,code:number }> => {
+export const deleteProductService = async (id:number): Promise<{ data:any,code:number }> => {
 
-    const results = await myDataSource.getRepository(Attr).delete(id)
+    const results = await myDataSource.getRepository(Product).delete(id)
     if (!results) {
         return {data:"not found",code:404};
     }

@@ -1,19 +1,18 @@
-import {IProduct,Product} from '..//Product';
+import {Category} from '../Entities/Category';
 import { myDataSource} from "../Database/Connection";
-export const createProductService = async (data: IProduct): Promise<{ data:IProduct,code:number }> => {
-
-    const product = await myDataSource.getRepository(Product).create(data)
-    const results = await myDataSource.getRepository(Product).save(product)
+import {CategoryCreateDTO, CategoryUpdateDTO} from "../Validations/CategoryValidation";
+export const createCategoryService = async (data: CategoryCreateDTO): Promise<{ data:any,code:number }> => {
+    const category = myDataSource.getRepository(Category).create(data)
+    const results = await myDataSource.getRepository(Category).save(category)
     return {data:results,code:201}
 };
-export const getProductsService = async (): Promise<{ data:string|IProduct[],code:number }> => {
-    const product = new Product()
-    const result = await myDataSource.getRepository(Product).find()
+export const getCategoriesService = async (): Promise<{ data:any,code:number }> => {
+    const result = await myDataSource.getRepository(Category).find()
     return {data:result,code:200}
 };
-export const getProductService = async (id:number): Promise<{ data:string|IProduct,code:number }> => {
+export const getCategoryService = async (id:number): Promise<{ data:any,code:number }> => {
 
-    const results = await myDataSource.getRepository(Product).findOneBy({
+    const results = await myDataSource.getRepository(Category).findOneBy({
         id:id
     })
     if (!results) {
@@ -21,21 +20,21 @@ export const getProductService = async (id:number): Promise<{ data:string|IProdu
     }
     return {data:results,code:200}
 };
-export const updateProductService = async (id:number,data:IProduct): Promise<{ data:string|IProduct,code:number }> => {
+export const updateCategoryService = async (id:number,data:CategoryUpdateDTO): Promise<{ data:any,code:number }> => {
 
-    const cat = await myDataSource.getRepository(Product).findOneBy({
+    const cat = await myDataSource.getRepository(Category).findOneBy({
         id: id,
     })
     if (!cat) {
         return {data:"not found",code:404};
     }
-    myDataSource.getRepository(Product).merge(cat, data)
-    const results = await myDataSource.getRepository(Product).save(cat)
+    myDataSource.getRepository(Category).merge(cat, data)
+    const results = await myDataSource.getRepository(Category).save(cat)
     return {data:results,code:200}
 };
-export const deleteProductService = async (id:number): Promise<{ data:string|IProduct,code:number }> => {
+export const deleteCategoryService = async (id:number): Promise<{ data:any,code:number }> => {
 
-    const results = await myDataSource.getRepository(Product).delete(id)
+    const results = await myDataSource.getRepository(Category).delete(id)
     if (!results) {
         return {data:"not found",code:404};
     }

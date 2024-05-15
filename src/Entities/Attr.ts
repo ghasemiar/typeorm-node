@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn } from "typeorm"
+import {Entity, Column, PrimaryGeneratedColumn, ManyToOne} from "typeorm"
+import {Category} from "./Category";
 @Entity()
 export class Attr {
     @PrimaryGeneratedColumn()
@@ -7,4 +8,6 @@ export class Attr {
     name: string;
     @Column({type:"varchar"})
     type: string
+    @ManyToOne(() => Category, (category) => category.attr, )
+    category?: Category;
 }

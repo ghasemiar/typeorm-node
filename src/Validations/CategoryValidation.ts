@@ -17,18 +17,18 @@ export class CategoryCreateDTO {
   name: string;
   @IsOptional()
   @IsString()
-  parent: string;
+  parentId: string;
   @IsOptional()
   @IsString()
-  attributes?: string;
+  attrId: string;
 }
 export class CategoryUpdateDTO {
   @IsString()
   name: string;
   @IsOptional()
   @IsString()
-  parent: string;
+  parentId: string;
   @IsOptional()
   @IsString()
-  attributes?: string;
+  attrId: string;
 }

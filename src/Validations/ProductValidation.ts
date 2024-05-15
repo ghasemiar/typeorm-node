@@ -19,7 +19,7 @@ export class ProductCreateDTO {
   @IsString()
   description?: string;
   @IsString()
-  category: string;
+  categoryId: string;
 }
 export class ProductUpdateDTO {
   @IsString()
@@ -36,5 +36,5 @@ export class ProductUpdateDTO {
   description?: string;
   @IsString()
   @IsOptional()
-  category: string;
+  categoryId: string;
 }

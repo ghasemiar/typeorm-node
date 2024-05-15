@@ -1,4 +1,4 @@
-import {Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn} from "typeorm";
+import {Column, Entity, JoinTable, ManyToOne, OneToMany, PrimaryGeneratedColumn} from "typeorm";
 import {Product} from "./Product";
 @Entity()
 export class Category {
@@ -18,4 +18,8 @@ export class Category {
         cascade: true,
     })
     products: Product[];
+
+    @OneToMany(() => Attr, (attr) => attr.category, )
+    @JoinTable()
+    attr: Attr[];
 }
