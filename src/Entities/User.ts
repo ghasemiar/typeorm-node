@@ -1,17 +1,9 @@
 import {Column, Entity, OneToMany, PrimaryGeneratedColumn} from "typeorm";
-import {ProductEntities} from "./ProductEntities";
+import {Product} from "./Product";
 export type UserRoleType = "admin" | "ghost"
 
-export interface IUserEntities{
-    id:string;
-    name: string;
-    username: string;
-    password: string;
-    email:string
-    rule: string;
-}
 @Entity()
-export class UserEntities {
+export class User {
     @PrimaryGeneratedColumn()
     id: number
     @Column()
@@ -26,8 +18,8 @@ export class UserEntities {
         default: "ghost"
     })
     rule: UserRoleType;
-    @OneToMany((type) => ProductEntities, (product) => product.category, {
+    @OneToMany((type) => Product, (product) => product.category, {
         cascade: true,
     })
-    product: ProductEntities[]
+    product: Product[]
 }

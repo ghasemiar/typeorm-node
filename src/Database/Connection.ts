@@ -1,4 +1,5 @@
 import {DataSource} from "typeorm";
+import {Attr} from "../Entities/Attr";
 
 export const myDataSource = new DataSource({
     type: "mysql",
@@ -8,6 +9,6 @@ export const myDataSource = new DataSource({
     password: "",
     database: "test",
     synchronize: true,
-    logging: true,
-    entities: ["src/Entities/*.ts"],
+    logging:true,
+    entities: [Attr],
 })

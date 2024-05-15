@@ -7,7 +7,6 @@
     "clean": "rimraf ./build",
     "build": "npm run clean && tsc",
     "start": "node src/index.ts",
-    "local": "tsx src",
     "local:watch": "nodemon src -e ts,json --exec tsx src",
     "lint": "eslint src",
     "format": "npx prettier --write src",

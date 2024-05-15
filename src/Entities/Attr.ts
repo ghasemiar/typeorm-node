@@ -1,15 +1,10 @@
 import { Entity, Column, PrimaryGeneratedColumn } from "typeorm"
-export interface IAttrEntities{
-    name: string;
-    type:string;
-}
 @Entity()
-export class AttrEntities {
+export class Attr {
     @PrimaryGeneratedColumn()
-    id: number
+    id: number;
     @Column()
-    name: string
+    name: string;
     @Column()
     type: string
-
 }

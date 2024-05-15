@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
-import {UserEntities} from "./../Entities/UserEntities";
+import {User} from "./..//User";
 import {AppDataSource} from "../Database/Connection";
 
 export interface AuthRequest extends Request {
@@ -25,10 +25,10 @@ export const authenticateUser = async (
             "Rz2aM90g6E0Tsihuod21XyGBeD3345EwMCUyg2H4KbPeWovDhzRHTpCs8KoWrkZO"
         ) as { userId: string };
         console.log(decoded);
-        const user = await AppDataSource.getRepository(UserEntities).findOneBy({
+        const user = await AppDataSource.getRepository(User).findOneBy({
             id: req.params.id,
         })
-        const user = await UserEntities.findById(decoded.userId);
+        const user = await User.findById(decoded.userId);
         if (!user) {
             throw new Error("User not found!");
         }
