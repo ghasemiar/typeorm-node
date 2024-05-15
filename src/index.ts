@@ -2,6 +2,7 @@ import express from "express"
 import 'reflect-metadata';
 import 'es6-shim';
 import{myDataSource} from "./Database/Connection"
+import AttrRoute from "./Routes/AttrRoute";
 const app = express();
 myDataSource
     .initialize()
@@ -13,6 +14,7 @@ myDataSource
     })
 
 app.use(express.json());
+app.use("/api",AttrRoute)
 
 const PORT = 3000;
 app.listen(PORT, () => {

@@ -3,8 +3,8 @@ import { Entity, Column, PrimaryGeneratedColumn } from "typeorm"
 export class Attr {
     @PrimaryGeneratedColumn()
     id: number;
-    @Column()
+    @Column({type:"varchar"})
     name: string;
-    @Column()
+    @Column({type:"varchar"})
     type: string
 }

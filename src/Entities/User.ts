@@ -5,21 +5,26 @@ export type UserRoleType = "admin" | "ghost"
 @Entity()
 export class User {
     @PrimaryGeneratedColumn()
-    id: number
-    @Column()
-    name: string
-    @Column()
+    id: number;
+
+    @Column({ type: "varchar" })
+    name: string;
+
+    @Column({ type: "varchar" })
     password: string;
-    @Column()
-    email:string
+
+    @Column({ type: "varchar" })
+    email: string;
+
     @Column({
         type: "enum",
         enum: ["admin", "ghost"],
         default: "ghost"
     })
     rule: UserRoleType;
-    @OneToMany((type) => Product, (product) => product.category, {
+
+    @OneToMany(() => Product, (product) => product.user, {
         cascade: true,
     })
-    product: Product[]
+    products: Product[];
 }
