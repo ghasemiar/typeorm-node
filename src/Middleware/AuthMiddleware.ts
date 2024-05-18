@@ -21,6 +21,7 @@ export const authenticateUser = async (
             token,
             "Rz2aM90g6E0Tsihuod21XyGBeD3345EwMCUyg2H4KbPeWovDhzRHTpCs8KoWrkZO"
         ) as { userId: string };
+        console.log(decoded)
         const user = await myDataSource.getRepository(User).findOneBy({
             id: Number(decoded.userId),
         })

@@ -28,13 +28,14 @@ export const loginUserService = async (data: UserLoginDto): Promise<{ data?:any,
 
 export const registerUserService = async (data: UserRegisterDTO): Promise<{ data:any,code:number,msg:string,token?:string }> => {
     //check user exist
+    console.log(data)
     const {username,email} = data
-    const existingUser: User | null = await myDataSource.getRepository(User).findOneByOrFail(  {username} );
+    const existingUser: User | null = await myDataSource.getRepository(User).findOneBy(  {username} );
     if (existingUser){
         return {msg:"user already exist",code:304,data:data}
     }
     //check email
-    const checkEmail: User | null = await myDataSource.getRepository(User).findOneByOrFail({email});
+    const checkEmail: User | null = await myDataSource.getRepository(User).findOneBy({email});
     if (checkEmail){
         return {msg:"this email already used" ,code:333,data:data}
     }
@@ -42,10 +43,12 @@ export const registerUserService = async (data: UserRegisterDTO): Promise<{ data
     const hashedPassword = await bcrypt.hash(data.password, 10);
     data.password = hashedPassword;
     //save user
-    const user = myDataSource.getRepository(User).create(data)
-    const results = await myDataSource.getRepository(User).save(user)
-
-    const token = generateToken(results);
+    const user = await myDataSource.createQueryBuilder()
+        .insert()
+        .into(User)
+        .values(data)
+        .execute()
+    const token = generateToken(data);
     return {data:data,msg:"welcome",code:201,token:token}
 }
 

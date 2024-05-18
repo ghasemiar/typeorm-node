@@ -2,6 +2,7 @@ import {Category} from '../Entities/Category';
 import { myDataSource} from "../Database/Connection";
 import {CategoryCreateDTO, CategoryUpdateDTO} from "../Validations/CategoryValidation";
 export const createCategoryService = async (data: CategoryCreateDTO): Promise<{ data:any,code:number }> => {
+    console.log(data)
     const category = myDataSource.getRepository(Category).create(data)
     const results = await myDataSource.getRepository(Category).save(category)
     return {data:results,code:201}

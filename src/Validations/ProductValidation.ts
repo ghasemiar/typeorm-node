@@ -18,23 +18,23 @@ export class ProductCreateDTO {
   year: number;
   @IsString()
   description?: string;
-  @IsString()
-  categoryId: string;
+  @IsNumber()
+  category: number;
 }
 export class ProductUpdateDTO {
   @IsString()
   @IsOptional()
-  name: string;
+  name?: string;
   @IsNumber()
   @IsOptional()
-  price: number;
+  price?: number;
   @IsNumber()
   @IsOptional()
-  year: number;
+  year?: number;
   @IsOptional()
   @IsString()
   description?: string;
-  @IsString()
+  @IsNumber()
   @IsOptional()
-  categoryId: string;
+  category: number;
 }

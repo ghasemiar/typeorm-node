@@ -1,4 +1,4 @@
-import { authenticateUser } from "./../Middleware/authMiddleware";
+import { authenticateUser } from "../Middleware/AuthMiddleware";
 import { Router } from "express";
 const router = Router();
 import {
@@ -7,12 +7,12 @@ import {
   createProduct,
   updateProduct,
   deleteProduct,
-} from "./../Controller/ProductController";
+} from "../Controller/ProductController";
 import { dtoValidationMiddleware } from "../Middleware/InputValidation";
 import {
   ProductCreateDTO,
   ProductUpdateDTO,
-} from "../Validation/ProductValidation";
+} from "../Validations/ProductValidation";
 router.get("/product", authenticateUser, getProducts);
 router.get("/product/:id", authenticateUser, getProduct);
 router.post(

@@ -18,12 +18,7 @@ export class User {
 
     @Column({ type: "varchar" })
     email: string;
-    // @Column({
-    //     type: "enum",
-    //     enum: ["admin", "ghost"],
-    //     default: "ghost"
-    // })
-    // rule: UserRoleType;
+
     @OneToMany(() => Product, (product) => product.user, {
         cascade: true,
     })
