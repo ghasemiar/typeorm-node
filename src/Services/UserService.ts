@@ -46,8 +46,6 @@ export const registerUserService = async (data: UserRegisterDTO): Promise<{ data
     const results = await myDataSource.getRepository(User).save(user)
 
     const token = generateToken(results);
-
     return {data:data,msg:"welcome",code:201,token:token}
-
 }
 

@@ -8,7 +8,7 @@ import {
   updateProduct,
   deleteProduct,
 } from "./../Controller/ProductController";
-import { dtoValidationMiddleware } from "../Middleware/InputsValidation";
+import { dtoValidationMiddleware } from "../Middleware/InputValidation";
 import {
   ProductCreateDTO,
   ProductUpdateDTO,

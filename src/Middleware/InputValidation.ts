@@ -15,6 +15,7 @@ export function dtoValidationMiddleware(
                     );
                     res.status(403).json(dtoErrors);
                 } else {
+                    req.body = dtoObj
                     next();
                 }
             },

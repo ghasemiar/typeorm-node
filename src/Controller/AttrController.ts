@@ -1,33 +1,32 @@
 import { Request, Response } from "express";
 
-// import {
-//     createAttrService,
-//     deleteAttrService,
-//     getAttrService,
-//     getAttrsService,
-//     updateAttrService,
-// } from "../Services/AttrService";
+import {
+    createAttrService,
+    // deleteAttrService,
+    // getAttrService,
+    // getAttrsService,
+    // updateAttrService,
+} from "../Services/AttrService";
 
 export const createAttr = async (
     req: Request,
-    // res: Response,
+    res: Response,
 ): Promise<void> => {
-    console.log(req.body)
-    // try {
-    //     const { data, code } = await createAttrService(req.body);
-    //     res.status(code).json(data);
-    // } catch (error: any) {
-    //     res.status(500).json({ error: error.message });
-    // }
+    try {
+        const { data, code } = await createAttrService(req.body);
+        res.status(code).json(data);
+    } catch (error: any) {
+        res.status(500).json({ error: error.message });
+    }
 };
 
 export const getAttrs = async (req: Request, res: Response): Promise<void> => {
-    // try {
-    //     const { data, code } = await getAttrsService();
-    //     res.status(code).json(data);
-    // } catch (error: any) {
-    //     res.status(500).json({ error: error.message });
-    // }
+        // try {
+        //     const { data, code } = await getAttrsService();
+        //     res.status(code).json(data);
+        // } catch (error: any) {
+        //     res.status(500).json({ error: error.message });
+        // }
 };
 
 export const getAttr = async (req: Request, res: Response): Promise<void> => {

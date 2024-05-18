@@ -8,11 +8,11 @@ import {
   getCategory,
   updateCategory,
 } from "../Controller/CategoryController";
-import { dtoValidationMiddleware } from "../Middleware/InputsValidation";
+import { dtoValidationMiddleware } from "../Middleware/InputValidation";
 import {
   CategoryCreateDTO,
   CategoryUpdateDTO,
-} from "../Validation/CategoryValidation";
+} from "../Validations/CategoryValidation";
 router.get("/category", authenticateUser, getCategories);
 router.get("/category/:id", authenticateUser, getCategory);
 router.post(

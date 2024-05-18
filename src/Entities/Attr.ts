@@ -9,5 +9,5 @@ export class Attr {
     @Column({type:"varchar"})
     type: string
     @ManyToOne(() => Category, (category) => category.attr, )
-    category?: Category;
+    category: Category;
 }

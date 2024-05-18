@@ -1,7 +1,7 @@
-import { loginUser, registerUser } from "./../Controller/UserController";
+import { loginUser, registerUser } from "../Controller/UserController";
 import { Router } from "express";
-import { dtoValidationMiddleware } from "../Middleware/InputsValidation";
-import { UserLoginDto, UserRegisterDTO } from "../Validation/UserValidation";
+import { dtoValidationMiddleware } from "../Middleware/InputValidation";
+import { UserLoginDto, UserRegisterDTO } from "../Validations/UserValidation";
 
 const router = Router();
 router.post(
