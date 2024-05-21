@@ -7,7 +7,7 @@ export const generateToken = (user:User): string => {
         { userId: user.id },
         "Rz2aM90g6E0Tsihuod21XyGBeD3345EwMCUyg2H4KbPeWovDhzRHTpCs8KoWrkZO",
         {
-            expiresIn: "1h",
+            expiresIn: "4h",
         }
     );
 };

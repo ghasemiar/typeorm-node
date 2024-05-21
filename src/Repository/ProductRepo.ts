@@ -1,0 +1,41 @@
+import {typesense} from "../Typesense/Config";
+
+
+const searchProducts = async (query: string, filters: any) => {
+    try {
+        const filterStrings = [];
+
+        if (filters.year) {
+            filterStrings.push(`year:=${filters.year}`);
+        }
+        if (filters.price) {
+            if (filters.price.min) {
+                filterStrings.push(`price:>=${filters.price.min}`);
+            }
+            if (filters.price.max) {
+                filterStrings.push(`price:<=${filters.price.max}`);
+            }
+        }
+        if (filters.brand) {
+            filterStrings.push(`brand:=${filters.brand}`);
+        }
+        if (filters.category) {
+            filterStrings.push(`category:=${filters.category}`);
+        }
+
+        const filterBy = filterStrings.join(' && ');
+
+        const searchResults = await typesense.collections('products').documents().search({
+            q: query,
+            query_by: 'name',
+            filter_by: filterBy,
+        });
+
+        return searchResults.hits;
+    } catch (error) {
+        console.error('Error searching products:', error);
+        return [];
+    }
+};
+
+export default searchProducts;

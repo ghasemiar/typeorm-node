@@ -3,18 +3,32 @@ import { myDataSource} from "../Database/Connection";
 import {ProductCreateDTO, ProductUpdateDTO} from "../Validations/ProductValidation";
 import {User} from "../Entities/User";
 import { plainToClass} from "class-transformer";
-import {typesense} from "../index";
+
+import {Brand} from "../Entities/Brand";
+import {Category} from "../Entities/Category";
+import {typesense} from "../Typesense/Config";
 
 export const createProductService = async (data: ProductCreateDTO,userId:number): Promise<{ data:any,code:number }> => {
     const user =  await myDataSource.getRepository(User).findOneBy({
         id:userId
     })
-    const p  =  plainToClass(Product,{...data,user});
-    const product = myDataSource.getRepository(Product).create(p)
+    const category =  await myDataSource.getRepository(Category).findOneBy({
+        id:data.category
+    })
+    const brand =  await myDataSource.getRepository(Brand).findOneBy({
+        id:data.brand
+    })
+    if(!user && !category && !brand){
+        return {data:"something wrong with inputs",code:404}
+    }
+    const productOBJ = new Product()
+    const product  =  plainToClass(Product,{...data,productOBJ});
+    product.category = category
+    product.brand = brand
+    product.user = user
     const result = await myDataSource.getRepository(Product).save(product)
-    console.log('dd');
-    const t = await typesense.collections('testProduct').documents().create(data);
-    console.log(t)
+    const saveToTypesense = await typesense.collections('Product').documents().create(data);
+    console.log(saveToTypesense)
     return {data:result,code:201}
 };
 
@@ -52,7 +66,7 @@ export const deleteProductService = async (id:number): Promise<{ data:any,code:n
     if (!find) {
         return {data:"not found",code:404};
     }
-    const results = await myDataSource.getRepository(Product).delete(find)
+    await myDataSource.getRepository(Product).delete(find)
     await typesense.collections('product').documents(id.toString()).delete();
     return {data:"deleted",code:200}
 };

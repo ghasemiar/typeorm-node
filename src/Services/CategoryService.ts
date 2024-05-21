@@ -2,7 +2,19 @@ import {Category} from '../Entities/Category';
 import { myDataSource} from "../Database/Connection";
 import {CategoryCreateDTO, CategoryUpdateDTO} from "../Validations/CategoryValidation";
 export const createCategoryService = async (data: CategoryCreateDTO): Promise<{ data:any,code:number }> => {
-    console.log(data)
+    if(data.parentId){
+        const {name,parentId} = data
+        const getParent = await myDataSource.getRepository(Category).findOneBy({id:parentId})
+        if(!getParent){
+            return {data:"parent id not found",code:404}
+        }
+        const cat = new Category()
+        cat.parent=getParent
+        cat.name=name
+        const category = myDataSource.getRepository(Category).create(cat)
+        const results = await myDataSource.getRepository(Category).save(category)
+        return {data:results,code:201}
+    }
     const category = myDataSource.getRepository(Category).create(data)
     const results = await myDataSource.getRepository(Category).save(category)
     return {data:results,code:201}

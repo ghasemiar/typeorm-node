@@ -4,12 +4,13 @@ import {
     createProductService,deleteProductService,getProductService,getProductsService,updateProductService
 } from "../Services/ProductService";
 import {AuthRequest} from "../Middleware/AuthMiddleware";
+import searchProducts from "../Repository/ProductRepo";
 
 export const createProduct = async (req: AuthRequest, res: Response): Promise<void> => {
     try {
         console.log(req.user)
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-expect-error
+        // @ts-ignore
         const {data,code} = await createProductService(req.body,req.user.id);
         res.status(code).json(data);
     } catch (error:any) {
@@ -56,3 +57,28 @@ export const deleteProduct = async (req: Request, res: Response): Promise<void> 
         res.status(500).json({ error: error.message });
     }
 };
+
+//Repository
+export const searchProduct = async (req:Request, res:Response) => {
+    const query = req.query.q as string;
+    if (!query) {
+        return res.status(400).send('Query parameter "q" is required');
+    }
+
+    const filters = {
+        year: req.query.year,
+        price: {
+            min: req.query.price_min,
+            max: req.query.price_max,
+        },
+        brand: req.query.brand,
+        category: req.query.category,
+    };
+
+    try {
+        const results = await searchProducts(query, filters);
+        res.json(results);
+    } catch (error) {
+        res.status(500).send('Error performing search');
+    }
+}

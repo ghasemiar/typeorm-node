@@ -9,6 +9,8 @@
 //     category: Joi.string().optional(),
 // })
 import { IsString, IsNumber, IsOptional } from "class-validator";
+import {Brand} from "../Entities/Brand";
+import {Category} from "../Entities/Category";
 export class ProductCreateDTO {
   @IsString()
   name: string;
@@ -20,6 +22,8 @@ export class ProductCreateDTO {
   description?: string;
   @IsNumber()
   category: number;
+  @IsNumber()
+  brand: number;
 }
 export class ProductUpdateDTO {
   @IsString()
@@ -37,4 +41,7 @@ export class ProductUpdateDTO {
   @IsNumber()
   @IsOptional()
   category: number;
+  @IsNumber()
+  @IsOptional()
+  brand: number;
 }

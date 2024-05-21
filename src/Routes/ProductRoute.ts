@@ -28,4 +28,7 @@ router.put(
   updateProduct,
 );
 router.delete("/product/:id", authenticateUser, deleteProduct);
+//search filter
+router.get('/product-search', );
+
 export default router;

@@ -11,24 +11,18 @@
 //     parent: Joi.string().optional(),
 //     attributes: Joi.string().optional(),
 // })
-import { IsString, IsOptional } from "class-validator";
+import {IsString, IsOptional, IsNumber} from "class-validator";
 export class CategoryCreateDTO {
   @IsString()
   name: string;
   @IsOptional()
-  @IsString()
-  parentId: string;
-  @IsOptional()
-  @IsString()
-  attrId: string;
+  @IsNumber()
+  parentId: number;
 }
 export class CategoryUpdateDTO {
   @IsString()
   name: string;
   @IsOptional()
-  @IsString()
-  parentId: string;
-  @IsOptional()
-  @IsString()
-  attrId: string;
+  @IsNumber()
+  parentId: number;
 }

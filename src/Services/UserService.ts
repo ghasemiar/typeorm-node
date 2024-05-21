@@ -43,12 +43,9 @@ export const registerUserService = async (data: UserRegisterDTO): Promise<{ data
     const hashedPassword = await bcrypt.hash(data.password, 10);
     data.password = hashedPassword;
     //save user
-    const user = await myDataSource.createQueryBuilder()
-        .insert()
-        .into(User)
-        .values(data)
-        .execute()
-    const token = generateToken(data);
-    return {data:data,msg:"welcome",code:201,token:token}
+    const user =  myDataSource.getRepository(User).create(data);
+    const save = await myDataSource.getRepository(User).save(user)
+     const token = generateToken(user);
+    return {data:save,msg:"welcome",code:201,token:token}
 }
 
