@@ -2,12 +2,21 @@ import { loginUser, registerUser } from "../Controller/UserController";
 import { Router } from "express";
 import { dtoValidationMiddleware } from "../Middleware/InputValidation";
 import { UserLoginDto, UserRegisterDTO } from "../Validations/UserValidation";
+import { authenticateUser, authorizeUser } from "../Middleware/AuthMiddleware";
 
 const router = Router();
 router.post(
-  "/register",
+  "/user/register",
   dtoValidationMiddleware(UserRegisterDTO),
-  registerUser,
+  registerUser
 );
-router.post("/login", dtoValidationMiddleware(UserLoginDto), loginUser);
+router.post("/user/login", dtoValidationMiddleware(UserLoginDto), loginUser);
+
+router.post(
+  "/user/change-role/:id",
+  authenticateUser,
+  authorizeUser,
+  loginUser
+);
+
 export default router;

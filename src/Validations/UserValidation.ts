@@ -1,17 +1,6 @@
-// import Joi from "joi";
-//
-// export const userRegisterValidation = Joi.object({
-//     name: Joi.string().required(),
-//     username: Joi.string().required(),
-//     password: Joi.string().required(),
-//     email:Joi.string().required().email()
-// });
-// export const userLoginValidation = Joi.object({
-//     password: Joi.string().required(),
-//     email:Joi.string().required().email()
-// })
-import { IsEmail, IsString, Matches } from "class-validator";
+import { IsEmail, IsEnum, IsString, Matches } from "class-validator";
 import { Expose } from "class-transformer";
+import { UserRole } from "../Entities/User";
 export class UserRegisterDTO {
   @Expose()
   @IsString()
@@ -29,7 +18,12 @@ export class UserRegisterDTO {
   @IsString()
   @IsEmail({}, { message: "too long" })
   email: string;
+
+  @Expose()
+  @IsEnum(UserRole)
+  role: UserRole;
 }
+
 export class UserLoginDto {
   @Expose()
   @IsString()

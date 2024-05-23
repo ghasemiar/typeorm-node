@@ -1,6 +1,6 @@
 import { createConnection } from 'typeorm';
 import { Product } from '../Entities/Product';
-import typesense from "../Typesense/Config";
+import {typesense} from "../Typesense/Config";
 
 
 const syncWithTypesense = async () => {
