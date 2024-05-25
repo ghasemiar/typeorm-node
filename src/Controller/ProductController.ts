@@ -19,12 +19,22 @@ export const createProduct = async (req: AuthRequest, res: Response): Promise<vo
 };
 
 export const getProducts = async (req: Request, res: Response): Promise<void> => {
-    try {
-        const {data,code} = await getProductsService()
-        res.status(code).json(data);
-    } catch (error:any) {
-        res.status(500).json({ error: error.message });
-    }
+        const query = req.query.q as string;
+        const filters = {
+            year: req.query.year,
+            price: {
+                min: req.query.price_min,
+                max: req.query.price_max,
+            },
+            brand: req.query.brand,
+            category: req.query.category,
+        };
+        try {
+            const results = await searchProducts(query, filters);
+            res.json(results);
+        } catch (error) {
+            res.status(500).send('Error performing search');
+        }
 };
 
 export const getProduct = async (req: Request, res: Response): Promise<void> => {
@@ -60,25 +70,5 @@ export const deleteProduct = async (req: Request, res: Response): Promise<void> 
 
 //Repository
 export const searchProduct = async (req:Request, res:Response) => {
-    const query = req.query.q as string;
-    if (!query) {
-        return res.status(400).send('Query parameter "q" is required');
-    }
 
-    const filters = {
-        year: req.query.year,
-        price: {
-            min: req.query.price_min,
-            max: req.query.price_max,
-        },
-        brand: req.query.brand,
-        category: req.query.category,
-    };
-
-    try {
-        const results = await searchProducts(query, filters);
-        res.json(results);
-    } catch (error) {
-        res.status(500).send('Error performing search');
-    }
 }

@@ -14,6 +14,7 @@ export const createCategory = async (req: Request, res: Response): Promise<void>
 };
 
 export const getCategories = async (req: Request, res: Response): Promise<void> => {
+    console.log("dd")
     try {
         const {data,code} = await getCategoriesService()
         res.status(code).json(data);

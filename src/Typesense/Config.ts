@@ -1,13 +1,12 @@
 import Typesense from "typesense";
-
 export const typesense = new Typesense.Client({
     nodes: [
         {
-            host: '172.19.50.129',
-            port: 8108,
-            protocol: 'http'
+            host: process.env.TYPESENSE_HOST||"172.30.34.118",
+            port: Number(process.env.TYPESENSE_PORT)||8108,
+            protocol: process.env.TYPESENSE_PROTOCOL||"http"
         }
     ],
-    apiKey: 'c8SVn4zjYml40ppXh7y5XZarWMTiSyDjF8qH0zilZXhdwffB',
+    apiKey: process.env.TYPESENSE_APIKEY||"HRqLKEvviPymcyPGMw4hJjoFnOkANwmIJA9VR3WAQigNCbIk",
     connectionTimeoutSeconds: 10
 });

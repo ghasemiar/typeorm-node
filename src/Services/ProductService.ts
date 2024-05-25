@@ -24,7 +24,7 @@ export const createProductService = async (
   const brand = await myDataSource.getRepository(Brand).findOneBy({
     id: data.brand,
   });
-  if (!user && !category && !brand) {
+  if (!user || !category || !brand) {
     return { data: "something wrong with inputs", code: 404 };
   }
 
@@ -33,17 +33,9 @@ export const createProductService = async (
   product.brand = brand;
   product.user = user;
   console.log(product);
-  try {
-    const result = await myDataSource.getRepository(Product).save(product);
-    return { data: result, code: 201 };
-  } catch (err) {
-    console.log(err);
-  }
-  //   const saveToTypesense = await typesense
-  //     .collections("Product")
-  //     .documents()
-  //     .create(data);
-  //   console.log(saveToTypesense);
+  const result = await myDataSource.getRepository(Product).save(product);
+  await typesense.collections("Product").documents().create(data);
+  return { data: result, code: 201 };
 };
 
 export const getProductsService = async (): Promise<{
@@ -77,7 +69,7 @@ export const updateProductService = async (
   myDataSource.getRepository(Product).merge(product, data);
   const result = await myDataSource.getRepository(Product).save(product);
   await typesense
-    .collections("product")
+    .collections("Product")
     .documents(id.toString())
     .update(result);
   return { data: result, code: 200 };
@@ -92,6 +84,6 @@ export const deleteProductService = async (
     return { data: "not found", code: 404 };
   }
   await myDataSource.getRepository(Product).delete(find);
-  await typesense.collections("product").documents(id.toString()).delete();
+  await typesense.collections("Product").documents(id.toString()).delete();
   return { data: "deleted", code: 200 };
 };

@@ -25,8 +25,8 @@ const searchProducts = async (query: string, filters: any) => {
 
         const filterBy = filterStrings.join(' && ');
 
-        const searchResults = await typesense.collections('products').documents().search({
-            q: query,
+        const searchResults = await typesense.collections('Product').documents().search({
+            q: query?query:"*",
             query_by: 'name',
             filter_by: filterBy,
         });

@@ -21,6 +21,7 @@ export const createCategoryService = async (data: CategoryCreateDTO): Promise<{ 
 };
 export const getCategoriesService = async (): Promise<{ data:any,code:number }> => {
     const result = await myDataSource.getRepository(Category).find()
+    console.log(result)
     return {data:result,code:200}
 };
 export const getCategoryService = async (id:number): Promise<{ data:any,code:number }> => {
