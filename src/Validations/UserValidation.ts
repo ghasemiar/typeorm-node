@@ -18,10 +18,6 @@ export class UserRegisterDTO {
   @IsString()
   @IsEmail({}, { message: "too long" })
   email: string;
-
-  @Expose()
-  @IsEnum(UserRole)
-  role: UserRole;
 }
 
 export class UserLoginDto {

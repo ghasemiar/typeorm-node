@@ -13,22 +13,22 @@ import {
   ProductCreateDTO,
   ProductUpdateDTO,
 } from "../Validations/ProductValidation";
-router.get("/product", authenticateUser, getProducts);
-router.get("/product/:id", authenticateUser, getProduct);
+router.get("/product", getProducts);
+router.get("/product/:id", getProduct);
 router.post(
   "/product",
   authenticateUser,
   dtoValidationMiddleware(ProductCreateDTO),
-  createProduct,
+  createProduct
 );
 router.put(
   "/product/:id",
   authenticateUser,
   dtoValidationMiddleware(ProductUpdateDTO),
-  updateProduct,
+  updateProduct
 );
 router.delete("/product/:id", authenticateUser, deleteProduct);
 //search filter
-router.get('/product-search', );
+router.get("/product-search");
 
 export default router;
