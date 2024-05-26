@@ -13,19 +13,19 @@ import {
   CategoryCreateDTO,
   CategoryUpdateDTO,
 } from "../Validations/CategoryValidation";
-router.get("/category", authenticateUser, getCategories);
+router.get("/category", getCategories);
 router.get("/category/:id", authenticateUser, getCategory);
 router.post(
   "/category",
   authenticateUser,
   dtoValidationMiddleware(CategoryCreateDTO),
-  createCategory,
+  createCategory
 );
 router.put(
   "/category/:id",
   authenticateUser,
   dtoValidationMiddleware(CategoryUpdateDTO),
-  updateCategory,
+  updateCategory
 );
 router.delete("/category/:id", authenticateUser, deleteCategory);
 export default router;
