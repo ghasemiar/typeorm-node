@@ -1,7 +1,8 @@
 import {Column, Entity, JoinTable, ManyToOne, PrimaryGeneratedColumn} from "typeorm";
-import { User} from "./User";
-import {Category} from "./Category";
-import {Brand} from "./Brand";
+import {Category} from "../Category/Entity";
+import {Brand} from "../Brand/Entity";
+import {User} from "../User/Entity";
+
 
 @Entity()
 export class Product {
@@ -14,11 +15,17 @@ export class Product {
     @Column({ type: "varchar" })
     description: string;
 
+    @Column({ type: "varchar" })
+    content: string;
+
     @Column({ type: "int" })
     year: number;
 
     @Column({ type: "decimal" })
     price: number;
+
+    @Column({ type: "varchar" , nullable:true })
+    image: string;
 
     @ManyToOne(() => Category, (category) => category.products)
     @JoinTable()

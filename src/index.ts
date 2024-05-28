@@ -1,17 +1,19 @@
-import express from "express";
+import express,{Response,Request} from "express";
+
 import "reflect-metadata";
 import "es6-shim";
 import { myDataSource } from "./Database/Connection";
-import UserRoutes from "./Routes/UserRoutes";
-import CategoryRoute from "./Routes/CategoryRoute";
-import ProductRoute from "./Routes/ProductRoute";
-import TypesenseRoute from "./Routes/TypesenseRoute";
+import UserRoutes from "./Modules/User/Routes";
+import CategoryRoute from "./Modules/Category/Routes";
+import ProductRoute from "./Modules/Product/Routes";
+import TypesenseRoute from "./Modules/Typesense/Routes";
+import BrandRoutes from "./Modules/Brand/Routes";
 import { initializeTypesenseCollection } from "./Typesense/Collections/ProductCollection";
-import BrandRoutes from "./Routes/BrandRoutes";
 import cors from "cors";
 import 'dotenv/config'
 
 const app = express();
+
 app.use(cors({ credentials: true, origin: true }));
 //initialize database
 myDataSource
@@ -26,11 +28,14 @@ myDataSource
 initializeTypesenseCollection().then(response => console.log(response)).catch(err=> console.log(err));
 //Routes
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static('storage'))
 app.use("/api", UserRoutes);
 app.use("/api", CategoryRoute);
 app.use("/api", ProductRoute);
 app.use("/api", TypesenseRoute);
 app.use("/api", BrandRoutes);
+
 
 const PORT = process.env.PORT||"3000";
 app.listen(PORT, () => {

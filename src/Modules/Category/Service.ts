@@ -1,6 +1,6 @@
-import {Category} from '../Entities/Category';
-import { myDataSource} from "../Database/Connection";
-import {CategoryCreateDTO, CategoryUpdateDTO} from "../Validations/CategoryValidation";
+import {Category} from './Entity';
+import { myDataSource} from "../../Database/Connection";
+import {CategoryCreateDTO, CategoryUpdateDTO} from "./DTO";
 export const createCategoryService = async (data: CategoryCreateDTO): Promise<{ data:any,code:number }> => {
     if(data.parentId){
         const {name,parentId} = data

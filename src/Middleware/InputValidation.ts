@@ -1,24 +1,21 @@
-import { RequestHandler } from "express";
-import { plainToClass } from "class-transformer";
-import { validate, ValidationError } from "class-validator";
-export function dtoValidationMiddleware(
-    type: any,
-    skipMissingProperties = false,
-): RequestHandler {
-    return (req, res, next) => {
-        const dtoObj = plainToClass(type, req.body);
-        validate(dtoObj, { skipMissingProperties }).then(
-            (errors: ValidationError[]) => {
-                if (errors.length > 0) {
-                    const dtoErrors = errors.map((error: ValidationError) =>
-                        (Object as any).values(error.constraints),
-                    );
-                    res.status(403).json(dtoErrors);
-                } else {
-                    req.body = dtoObj
-                    next();
-                }
-            },
-        );
+import {plainToClass} from "class-transformer";
+import {validate, ValidationError} from "class-validator";
+import {NextFunction,Request,Response} from "express";
+
+
+export const dtoValidationMiddleware = (type: any) => {
+    return async (req: Request, res: Response, next: NextFunction) => {
+        const dto = plainToClass(type, req.body);
+        const errors = await validate(dto);
+        if (errors.length > 0) {
+            const formattedErrors = errors.map(error => {
+                return {
+                    property: error.property,
+                    constraints: error.constraints,
+                };
+            });
+            return res.status(400).json({ errors: formattedErrors });
+        }
+        next();
     };
-}
+};

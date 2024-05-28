@@ -1,5 +1,5 @@
 import { Router } from "express";
-import {showCollection,deleteCollection} from "../Controller/TypesenseController";
+import {showCollection,deleteCollection} from "./Controller";
 
 const router = Router();
 router.get("/typesense",showCollection);
