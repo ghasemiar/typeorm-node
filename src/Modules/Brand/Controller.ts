@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 
 import {
     getBrandService,createBrandService,deleteBrandService,updateBrandService,getBrandsService
-} from "../Services/BrandServices";
+} from "./Service";
 
 export const createBrand = async (req: Request, res: Response): Promise<void> => {
     try {

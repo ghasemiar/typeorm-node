@@ -13,16 +13,16 @@
 // })
 import {IsString, IsOptional, IsNumber} from "class-validator";
 export class CategoryCreateDTO {
-  @IsString()
-  name: string;
-  @IsOptional()
-  @IsNumber()
-  parentId: number;
+    @IsString()
+    name: string;
+    @IsOptional()
+    @IsNumber()
+    parentId: number;
 }
 export class CategoryUpdateDTO {
-  @IsString()
-  name: string;
-  @IsOptional()
-  @IsNumber()
-  parentId: number;
+    @IsString()
+    name: string;
+    @IsOptional()
+    @IsNumber()
+    parentId: number;
 }

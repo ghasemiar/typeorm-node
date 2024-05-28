@@ -1,6 +1,6 @@
-import {Brand} from '../Entities/Brand';
-import { myDataSource} from "../Database/Connection";
-import {BrandCreateDTO, BrandUpdateDTO} from "../Validations/BrandValidation";
+import {Brand} from './Entity';
+import { myDataSource} from "../../Database/Connection";
+import {BrandCreateDTO, BrandUpdateDTO} from "./DTO";
 export const createBrandService = async (data: BrandCreateDTO): Promise<{ data:any,code:number }> => {
     const brand = myDataSource.getRepository(Brand).create(data)
     const results = await myDataSource.getRepository(Brand).save(brand)

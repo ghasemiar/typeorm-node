@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 
 import {
     getCategoryService,createCategoryService,deleteCategoryService,getCategoriesService,updateCategoryService
-} from "../Services/CategoryService";
+} from "./Service";
 
 export const createCategory = async (req: Request, res: Response): Promise<void> => {
     try {
