@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 
 import {
+    allUserProductsService,
     createProductService,
     deleteProductService,
     getProductService,
@@ -66,7 +67,8 @@ export const updateProduct = async (
 ): Promise<void> => {
     try {
         const { id } = req.params;
-        const { data, code } = await updateProductService(Number(id), req.body);
+        const imagePath = req.file ? req.file.filename : undefined;
+        const { data, code } = await updateProductService(Number(id), req.body,imagePath);
         res.status(code).json(data);
     } catch (error: any) {
         res.status(500).json({ error: error.message });
@@ -81,8 +83,16 @@ export const deleteProduct = async (
         const { id } = req.params;
         const { data, code } = await deleteProductService(Number(id));
         res.status(code).json(data);
-        res.status(204).send();
     } catch (error: any) {
         res.status(500).json({ error: error.message });
     }
 };
+export const getProductsOfUser = async (req:AuthRequest,res:Response) =>{
+    try {
+        const userId = req.user.id
+        const {data,code} = await allUserProductsService(userId)
+        res.status(code).json(data)
+    }catch (err){
+        res.status(500).json({ error: err.message });
+    }
+}

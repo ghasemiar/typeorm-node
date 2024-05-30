@@ -107,3 +107,10 @@ export const deleteProductService = async (
     await typesense.collections("Product").documents(id.toString()).delete();
     return { data: "deleted", code: 200 };
 };
+export const allUserProductsService = async (userId:number):Promise<{ data: any; code: number }>=>{
+    const user = await myDataSource.getRepository(User).findOneBy({
+        id: userId,
+    });
+    const result = await myDataSource.getRepository(Product).findBy({user})
+    return {data: result, code: 200 };
+}

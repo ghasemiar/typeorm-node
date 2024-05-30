@@ -5,7 +5,7 @@ import {
     getProducts,
     createProduct,
     updateProduct,
-    deleteProduct,
+    deleteProduct, getProductsOfUser,
 } from "./Controller";
 import { dtoValidationMiddleware } from "../../Middleware/InputValidation";
 import {
@@ -43,5 +43,5 @@ router.put(
     updateProduct
 );
 router.delete("/product/:id", authenticateUser, deleteProduct);
-
+router.get("/products-user",authenticateUser, getProductsOfUser);
 export default router;
