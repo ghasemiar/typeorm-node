@@ -36,9 +36,10 @@ export const createProductService = async (
     product.user = user;
     if (imagePath) {
         product.image = imagePath;
+        data.image = imagePath
     }
     const result = await myDataSource.getRepository(Product).save(product);
-    // await typesense.collections("Product").documents().create(data);
+    await typesense.collections("Product").documents().create(data);
     return { data: result, code: 201 };
 };
 

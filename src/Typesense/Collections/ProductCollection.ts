@@ -17,6 +17,7 @@ export const initializeTypesenseCollection = async () => {
                     { name: 'price', type: 'int32' },
                     { name: 'category', type: 'int32' },
                     { name: 'brand', type: 'int32' },
+                    {name:'image',type:'string'}
                 ],
             });
             console.log('Collection created');

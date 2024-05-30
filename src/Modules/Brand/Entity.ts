@@ -15,4 +15,6 @@ export class Brand {
         cascade: true,
     })
     products: Product[];
+
+
 }
