@@ -9,57 +9,52 @@
 //     category: Joi.string().optional(),
 // })
 import { IsString, IsNumber, IsOptional } from "class-validator";
-import {Transform} from "class-transformer";
+import { Transform } from "class-transformer";
 export class ProductCreateDTO {
-    @IsString()
-    name: string;
-    @Transform(({ value }) => parseInt(value))
-    @IsNumber()
-    price: number;
-    @Transform(({ value }) => parseInt(value))
-    @IsNumber()
-    year: number;
-    @IsString()
-    description?: string;
-    @Transform(({ value }) => parseInt(value))
-    @IsNumber()
-    category: number;
-    @Transform(({ value }) => parseInt(value))
-    @IsNumber()
-    brand: number;
-    @IsString()
-    @IsOptional()
-    image:string
-    @IsString()
-    content:string
+  @IsString()
+  name: string;
+  @Transform(({ obj }) => (obj.price = Number(obj.price)))
+  @IsNumber()
+  price: number;
+  @Transform(({ obj }) => (obj.year = Number(obj.year)))
+  @IsNumber()
+  year: number;
+  @IsString()
+  description?: string;
+  @Transform(({ obj }) => (obj.category = Number(obj.category)))
+  @IsNumber()
+  category: number;
+  @Transform(({ obj }) => (obj.brand = Number(obj.brand)))
+  @IsNumber()
+  brand: number;
+  @IsString()
+  @IsOptional()
+  image: string;
 }
 export class ProductUpdateDTO {
-    @IsString()
-    @IsOptional()
-    name?: string;
-    @Transform(({ value }) => parseInt(value))
-    @IsNumber()
-    @IsOptional()
-    price?: number;
-    @Transform(({ value }) => parseInt(value))
-    @IsNumber()
-    @IsOptional()
-    year?: number;
-    @IsOptional()
-    @IsString()
-    description?: string;
-    @Transform(({ value }) => parseInt(value))
-    @IsNumber()
-    @IsOptional()
-    category: number;
-    @IsNumber()
-    @IsOptional()
-    @Transform(({ value }) => parseInt(value))
-    brand: number;
-    @IsString()
-    @IsOptional()
-    image:string
-    @IsString()
-    @IsOptional()
-    content:string
+  @IsString()
+  @IsOptional()
+  name?: string;
+  @Transform(({ value }) => parseInt(value))
+  @IsNumber()
+  @IsOptional()
+  price?: number;
+  @Transform(({ value }) => parseInt(value))
+  @IsNumber()
+  @IsOptional()
+  year?: number;
+  @IsOptional()
+  @IsString()
+  description?: string;
+  @Transform(({ value }) => parseInt(value))
+  @IsNumber()
+  @IsOptional()
+  category: number;
+  @IsNumber()
+  @IsOptional()
+  @Transform(({ value }) => parseInt(value))
+  brand: number;
+  @IsString()
+  @IsOptional()
+  image: string;
 }
