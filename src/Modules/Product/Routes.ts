@@ -1,5 +1,5 @@
 import { authenticateUser } from "../../Middleware/AuthMiddleware";
-import { Router } from "express";
+import { Router,Request } from "express";
 import {
     getProduct,
     getProducts,
@@ -17,14 +17,14 @@ import multer from "multer";
 import path from "path";
 const router = Router();
 const storage = multer.diskStorage({
-    destination:(req,file,cb) =>{
+    destination:(req:Request,file:Express.Multer.File,cb) =>{
         cb(null,'src/storage/')
     },
-    filename(req , file: Express.Multer.File, cb: (error: (Error | null), filename: string) => void) {
+    filename(req:Request , file: Express.Multer.File, cb: (error: (Error | null), filename: string) => void) {
         cb(null,Date.now() + path.extname(file.originalname))
     }
 })
-export const Upload = multer({storage})
+export const Upload:multer.Multer = multer({storage})
 
 router.get("/product", getProducts);
 router.get("/product/:id", getProduct);
