@@ -37,7 +37,7 @@ export const createProductService = async (
   }
   console.log(data);
   const result = await myDataSource.getRepository(Product).save(product);
-  await typesense.collections("Product").documents().create(data);
+  await typesense.collections("Product").documents().create({name:result.name, image:result.image, description:result.description,year:result.year,price:result.price,status:result.status,category:result.category.id,brand:result.brand.id,user:result.user.id});
   return { data: result, code: 201 };
 };
 

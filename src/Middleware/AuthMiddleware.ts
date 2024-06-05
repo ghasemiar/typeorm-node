@@ -1,7 +1,8 @@
-import { Request, Response, NextFunction } from "express";
+import {NextFunction, Request, Response} from "express";
 import jwt from "jsonwebtoken";
-import { myDataSource } from "../Database/Connection";
+import {myDataSource} from "../Database/Connection";
 import {User, UserRole} from "../Modules/User/Entity";
+
 export interface AuthRequest extends Request {
   user?: {
     id: number;
@@ -36,12 +37,11 @@ export const authenticateUser = async (
   }
 };
 
-export const authorizeUser = () => {
-  return (req: AuthRequest, res: Response, next: NextFunction) => {
-    if (req.user?.role === "admin") {
+export const authorizeUser = async (req: AuthRequest, res: Response, next: NextFunction)=> {
+    if (req.user?.role === UserRole.ADMIN) {
       next();
     } else {
       res.status(403).json({ message: "Unauthorized access!" });
     }
-  };
+
 };

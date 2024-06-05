@@ -1,4 +1,4 @@
-import { authenticateUser } from "../../Middleware/AuthMiddleware";
+import { authenticateUser,authorizeUser } from "../../Middleware/AuthMiddleware";
 import { Router } from "express";
 const router = Router();
 import {
@@ -15,12 +15,14 @@ router.get("/brand/:id", authenticateUser, getBrand);
 router.post(
     "/brand",
     authenticateUser,
+    authorizeUser,
     dtoValidationMiddleware(BrandCreateDTO),
     createBrand
 );
 router.put(
     "/brand/:id",
     authenticateUser,
+    authorizeUser,
     dtoValidationMiddleware(BrandUpdateDTO),
     updateBrand
 );

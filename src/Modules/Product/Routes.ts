@@ -1,4 +1,4 @@
-import { authenticateUser } from "../../Middleware/AuthMiddleware";
+import {authenticateUser, authorizeUser} from "../../Middleware/AuthMiddleware";
 import { Router,Request } from "express";
 import {
     getProduct,
@@ -15,6 +15,7 @@ import {
 
 import multer from "multer";
 import path from "path";
+import {chantgeStatus} from "./Admin.controller";
 const router = Router();
 const storage = multer.diskStorage({
     destination:(req:Request,file:Express.Multer.File,cb) =>{
@@ -43,5 +44,6 @@ router.put(
     updateProduct
 );
 router.delete("/product/:id", authenticateUser, deleteProduct);
-router.get("/products-user",authenticateUser, getProductsOfUser);
+router.get("/user-products",authenticateUser, getProductsOfUser);
+router.put("/product-change-status/:id", authenticateUser,authorizeUser, chantgeStatus);
 export default router;

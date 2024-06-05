@@ -8,6 +8,7 @@ export const changeStatusService = async (productId:number,status:ProductStatus)
             return {msg:"not found",code:404}
         }
         product.status = status
+        await myDataSource.getRepository(Product).save(product)
         return {msg:'status changed',code:200}
     }catch (err){
         return {msg:'something went wrong',code:500}

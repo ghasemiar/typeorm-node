@@ -11,6 +11,7 @@ import { initializeTypesenseCollection } from "./Typesense/Collections/ProductCo
 import cors from "cors";
 import 'dotenv/config'
 import path from "path";
+import {createAdmin} from "./Modules/User/AdminSeeder";
 console.log(process.env.TYPESENSE_IP + " " + process.env.TYPESENSE_PORT + " " + process.env.TYPESENSE_PROTOCOL + " " + process.env.TYPESENSE_APIKEY)
 const app = express();
 
@@ -18,7 +19,8 @@ app.use(cors({ credentials: true, origin: true }));
 //initialize database
 myDataSource
   .initialize()
-  .then(() => {
+  .then(async () => {
+      await createAdmin()
     console.log("Data Source has been initialized!");
   })
   .catch((err) => {

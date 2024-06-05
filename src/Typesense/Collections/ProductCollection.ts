@@ -11,14 +11,50 @@ export const initializeTypesenseCollection = async () => {
             await typesense.collections().create({
                 name: 'Product',
                 fields: [
-                    { name: 'name', type: 'string' },
-                    { name: 'description', type: 'string' },
-                    { name: 'year', type: 'int32' },
-                    { name: 'price', type: 'int32' },
-                    { name: 'category', type: 'int32' },
-                    { name: 'brand', type: 'int32' },
-                    {name:'image',type:'string'}
+                    {
+                        name: "name",
+                        type: "string"
+                    },
+                    {
+                        name: "description",
+                        type: "string"
+                    },
+                    {
+                        name: "year",
+                        type: "int32"
+                    },
+                    {
+                        name: "price",
+                        type: "int32"
+                    },
+                    {
+                        name: "image",
+                        type: "string",
+                        "optional": true
+                    },
+                    {
+                        name: "status",
+                        type: "string",
+                        facet: true
+                    },
+                    {
+                        name: "category",
+                        type: "int32",
+                        facet: true
+                    },
+                    {
+                        name: "brand",
+                        type: "int32",
+                        facet: true
+                    },
+                    {
+                        name: "user",
+                        type: "int32",
+                        facet: true
+                    }
                 ],
+                default_sorting_field: "price"
+
             });
             console.log('Collection created');
         } else {
