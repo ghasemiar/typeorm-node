@@ -7,7 +7,7 @@ import CategoryRoute from "./Modules/Category/Routes";
 import ProductRoute from "./Modules/Product/Routes";
 import TypesenseRoute from "./Modules/Typesense/Routes";
 import BrandRoutes from "./Modules/Brand/Routes";
-import { initializeTypesenseCollection } from "./Typesense/Collections/ProductCollection";
+// import { initializeTypesenseCollection } from "./Typesense/Collections/ProductCollection";
 import cors from "cors";
 import 'dotenv/config'
 import path from "path";
@@ -28,7 +28,7 @@ myDataSource
   });
 //initialize typesense
 
-initializeTypesenseCollection().then(response => console.log(response)).catch(err=> console.log(err));
+// initializeTypesenseCollection().then(response => console.log(response)).catch(err=> console.log(err));
 //Routes
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -40,7 +40,7 @@ app.use("/api", TypesenseRoute);
 app.use("/api", BrandRoutes);
 
 
-const PORT = process.env.PORT;
+const PORT = 3000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });

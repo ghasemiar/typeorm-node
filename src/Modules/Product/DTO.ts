@@ -30,29 +30,24 @@ export class ProductCreateDTO {
   @IsString()
   @IsOptional()
   image: string;
+
 }
 export class ProductUpdateDTO {
   @IsString()
-  @IsOptional()
-  name?: string;
-  @Transform(({ value }) => parseInt(value))
+  name: string;
+  @Transform(({ obj }) => (obj.price = Number(obj.price)))
   @IsNumber()
-  @IsOptional()
-  price?: number;
-  @Transform(({ value }) => parseInt(value))
+  price: number;
+  @Transform(({ obj }) => (obj.year = Number(obj.year)))
   @IsNumber()
-  @IsOptional()
-  year?: number;
-  @IsOptional()
+  year: number;
   @IsString()
   description?: string;
-  @Transform(({ value }) => parseInt(value))
+  @Transform(({ obj }) => (obj.category = Number(obj.category)))
   @IsNumber()
-  @IsOptional()
   category: number;
+  @Transform(({ obj }) => (obj.brand = Number(obj.brand)))
   @IsNumber()
-  @IsOptional()
-  @Transform(({ value }) => parseInt(value))
   brand: number;
   @IsString()
   @IsOptional()

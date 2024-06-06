@@ -62,13 +62,14 @@ export const getProduct = async (
 };
 
 export const updateProduct = async (
-    req: Request,
+    req: AuthRequest,
     res: Response
 ): Promise<void> => {
     try {
         const { id } = req.params;
+        const userId = req.user.id
         const imagePath = req.file ? req.file.filename : undefined;
-        const { data, code } = await updateProductService(Number(id), req.body,imagePath);
+        const { data, code } = await updateProductService(Number(id),userId, req.body,imagePath);
         res.status(code).json(data);
     } catch (error: any) {
         res.status(500).json({ error: error.message });
