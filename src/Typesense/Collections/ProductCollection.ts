@@ -12,6 +12,10 @@ export const initializeTypesenseCollection = async () => {
                 name: 'Product',
                 fields: [
                     {
+                        name: "id",
+                        type: "string"
+                    },
+                    {
                         name: "name",
                         type: "string"
                     },

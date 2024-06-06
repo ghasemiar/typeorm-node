@@ -16,9 +16,7 @@ export const createProduct = async (
 ): Promise<void> => {
     try {
         const imagePath = req.file ? req.file.filename : undefined;
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        const { data, code } = await createProductService(req.body, req.user.id,imagePath);
+        const { data, code } = await createProductService(req.body, req.user,imagePath);
         res.status(code).json(data);
     } catch (error: any) {
         res.status(500).json({ error: error.message });
@@ -67,9 +65,8 @@ export const updateProduct = async (
 ): Promise<void> => {
     try {
         const { id } = req.params;
-        const userId = req.user.id
         const imagePath = req.file ? req.file.filename : undefined;
-        const { data, code } = await updateProductService(Number(id),userId, req.body,imagePath);
+        const { data, code } = await updateProductService(Number(id),req.user, req.body,imagePath);
         res.status(code).json(data);
     } catch (error: any) {
         res.status(500).json({ error: error.message });
@@ -77,12 +74,12 @@ export const updateProduct = async (
 };
 
 export const deleteProduct = async (
-    req: Request,
+    req: AuthRequest,
     res: Response
 ): Promise<void> => {
     try {
         const { id } = req.params;
-        const { data, code } = await deleteProductService(Number(id));
+        const { data, code } = await deleteProductService(Number(id),req.user);
         res.status(code).json(data);
     } catch (error: any) {
         res.status(500).json({ error: error.message });

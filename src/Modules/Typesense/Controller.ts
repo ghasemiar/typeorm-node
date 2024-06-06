@@ -32,6 +32,8 @@ export const showCollection = async (
         return { name: field.name, type: field.type };
       });
       res.status(200).json(result);
+
+
     })
     .catch((error) => {
       console.error("Error fetching collections:", error);
@@ -44,15 +46,14 @@ export const deleteCollection = async (
   res: Response
 ): Promise<void> => {
   axios
-    .delete(`http://172.24.62.191:8108/collections/${req.body.name}`, {
+    .delete(`http://172.24.62.191:8108/collections/${req.params.name}`, {
       headers: {
         "Content-Type": "application/json",
         "x-typesense-api-key": apiKey,
       },
     })
     .then((response) => {
-      console.log("Deleted", response.data);
-      res.status(200).json({ msg: "deleted" });
+      res.status(200).json({ msg: "deleted" , name:response.data.name });
     })
     .catch((error) => {
       console.error("Error fetching collections:", error);

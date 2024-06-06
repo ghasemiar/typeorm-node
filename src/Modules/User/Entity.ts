@@ -4,8 +4,7 @@ import {Product} from "../Product/Entity";
 export enum UserRole {
     ADMIN = "admin",
     GHOST = "ghost",
-}
-
+}   
 @Entity()
 export class User {
     @PrimaryGeneratedColumn()

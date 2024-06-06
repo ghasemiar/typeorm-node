@@ -1,5 +1,5 @@
 import {Request,Response} from "express";
-import {changeStatusService} from "./Admin.service";
+import {changeStatusService} from "./Service";
 
 export const chantgeStatus = async (req:Request,res:Response) => {
     try {
