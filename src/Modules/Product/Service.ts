@@ -97,7 +97,7 @@ export const updateProductService = async (
       description: updatedProduct.description,
       year: updatedProduct.year,
       price: updatedProduct.price,
-      status: updatedProduct.status,
+      status: ProductStatus.PENDING,
       category: updatedProduct.category.id,
       brand: updatedProduct.brand.id,
     });
