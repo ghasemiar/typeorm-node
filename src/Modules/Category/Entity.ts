@@ -1,8 +1,8 @@
-import {Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn} from "typeorm";
+import {Column, Entity, OneToMany, PrimaryGeneratedColumn, Tree, TreeChildren, TreeParent} from "typeorm";
 import {Product} from "../Product/Entity";
 
 
-
+@Tree("closure-table")
 @Entity()
 export class Category {
     @PrimaryGeneratedColumn()
@@ -11,11 +11,11 @@ export class Category {
     @Column({ type: "varchar" })
     name: string;
 
-    @ManyToOne(() => Category, (category) => category.children, { nullable: true })
-    parent?: Category;
+    @TreeChildren()
+    children: Category[]
 
-    @OneToMany(() => Category, (category) => category.parent, { nullable: true })
-    children?: Category[];
+    @TreeParent()
+    parent: Category
 
     @OneToMany(() => Product, (product) => product.category, {
         cascade: true,

@@ -24,8 +24,22 @@ export const createProductService = async (
   product.brand = brand;
   product.user = user;
   if (imagePath) product.image = imagePath;
-
   const result = await myDataSource.getRepository(Product).save(product);
+  const getCategoryPath = async (category: Category, path: number[] = []): Promise<number[]> => {
+    if (category.parent) {
+      const parentCategory = await myDataSource.getRepository(Category).findOne({
+        where: { id: category.parent.id },
+        relations: ['parent']
+      });
+      if (parentCategory) {
+        path.unshift(category.id);
+        return getCategoryPath(parentCategory, path);
+      }
+    }
+    path.unshift(category.id);
+    return path;
+  };
+  const allCategories = await getCategoryPath(result.category)
   await typesense.collections("Product").documents().create({
     id:result.id.toString(),
     name: result.name,
@@ -34,7 +48,7 @@ export const createProductService = async (
     year: result.year,
     price: result.price,
     status: result.status,
-    category: result.category.id,
+    category: allCategories,
     brand: result.brand.id,
     user: result.user.id
   });

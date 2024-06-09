@@ -43,7 +43,7 @@ export const initializeTypesenseCollection = async () => {
                     },
                     {
                         name: "category",
-                        type: "int32",
+                        type: "int32[]",
                         facet: true
                     },
                     {
