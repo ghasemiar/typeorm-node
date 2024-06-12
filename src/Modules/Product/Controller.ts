@@ -9,6 +9,7 @@ import {
 } from "./Service";
 import { AuthRequest } from "../../Middleware/AuthMiddleware";
 import searchProducts from "../../Repository/ProductRepo";
+import {typesense} from "../../Typesense/Config";
 
 export const createProduct = async (
     req: AuthRequest,

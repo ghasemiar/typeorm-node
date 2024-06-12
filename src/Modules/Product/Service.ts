@@ -25,21 +25,12 @@ export const createProductService = async (
   product.user = user;
   if (imagePath) product.image = imagePath;
   const result = await myDataSource.getRepository(Product).save(product);
-  const getCategoryPath = async (category: Category, path: number[] = []): Promise<number[]> => {
-    if (category.parent) {
-      const parentCategory = await myDataSource.getRepository(Category).findOne({
-        where: { id: category.parent.id },
-        relations: ['parent']
-      });
-      if (parentCategory) {
-        path.unshift(category.id);
-        return getCategoryPath(parentCategory, path);
-      }
-    }
-    path.unshift(category.id);
-    return path;
-  };
-  const allCategories = await getCategoryPath(result.category)
+  const path:number[] = []
+  const categoryParents = await myDataSource.getTreeRepository(Category).findAncestors(category);
+  categoryParents.map((item)=>{
+    path.unshift(item.id)
+  })
+  console.log(path)
   await typesense.collections("Product").documents().create({
     id:result.id.toString(),
     name: result.name,
@@ -48,7 +39,7 @@ export const createProductService = async (
     year: result.year,
     price: result.price,
     status: result.status,
-    category: allCategories,
+    category: path,
     brand: result.brand.id,
     user: result.user.id
   });
@@ -130,11 +121,13 @@ export const deleteProductService = async (
   if (!findProduct) {
     return { data: "not found", code: 404 };
   }
-  if (findProduct.user == user || user.role == UserRole.ADMIN) {
+  const result = await myDataSource.getRepository(Product).findBy({ user,id});
+  if (!result) {
+    return { data: "you cant delete this product", code: 404 };
+  }
     await myDataSource.getRepository(Product).delete(findProduct);
     await typesense.collections("Product").documents(id.toString()).delete();
     return { data: "deleted", code: 200 };
-  }else return { data: "you dont have permission to delete this product", code: 404 };
 };
 
 export const allUserProductsService = async (

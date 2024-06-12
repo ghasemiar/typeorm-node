@@ -66,3 +66,7 @@ export const changeRoleService = async (
   user.role = UserRole.ADMIN;
   await myDataSource.getRepository(User).save(user);
 };
+export const checkToken = async (tokne:string)=>{
+  const secretKey = "Rz2aM90g6E0Tsihuod21XyGBeD3345EwMCUyg2H4KbPeWovDhzRHTpCs8KoWrkZO"
+
+}

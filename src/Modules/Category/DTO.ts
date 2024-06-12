@@ -17,7 +17,7 @@ export class CategoryCreateDTO {
     name: string;
     @IsOptional()
     @IsNumber()
-    parentId: number;
+    parent: number;
 }
 export class CategoryUpdateDTO {
     @IsString()

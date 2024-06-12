@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import { User } from "../Entities/User";
+import { User } from "../Modules/User/Entity";
 
 export const generateToken = (user: User): string => {
   console.log(user.id);

@@ -2,25 +2,25 @@ import {Category} from './Entity';
 import { myDataSource} from "../../Database/Connection";
 import {CategoryCreateDTO, CategoryUpdateDTO} from "./DTO";
 export const createCategoryService = async (data: CategoryCreateDTO): Promise<{ data:any,code:number }> => {
-    if(data.parentId){
-        const {name,parentId} = data
-        const getParent = await myDataSource.getRepository(Category).findOneBy({id:parentId})
+    if(data.parent){
+        const {name,parent} = data
+        const getParent = await myDataSource.getRepository(Category).findOneBy({id:parent})
         if(!getParent){
             return {data:"parent id not found",code:404}
         }
         const cat = new Category()
         cat.parent=getParent
         cat.name=name
-        const category = myDataSource.getRepository(Category).create(cat)
-        const results = await myDataSource.getRepository(Category).save(category)
+        const results = await myDataSource.getRepository(Category).save(cat)
         return {data:results,code:201}
     }
-    const category = myDataSource.getRepository(Category).create(data)
-    const results = await myDataSource.getRepository(Category).save(category)
+    const cat = new Category()
+    cat.name = data.name
+    const results = await myDataSource.getRepository(Category).save(cat)
     return {data:results,code:201}
 };
 export const getCategoriesService = async (): Promise<{ data:any,code:number }> => {
-    const result = await myDataSource.getRepository(Category).find()
+    const result = await myDataSource.getTreeRepository(Category).findTrees()
     console.log(result)
     return {data:result,code:200}
 };
