@@ -24,7 +24,7 @@ const searchProducts = async (query: string, filters: any, sort: string) => {
 
     const filterBy = filterStrings.join(" && ");
 
-    const searchResults = await typesense
+    const searchResults: any = await typesense
       .collections("Product")
       .documents()
       .search({
@@ -34,7 +34,7 @@ const searchProducts = async (query: string, filters: any, sort: string) => {
         sort_by: sort,
       });
 
-    return searchResults.hits;
+    return searchResults;
   } catch (error) {
     console.error("Error searching products:", error);
     return [];

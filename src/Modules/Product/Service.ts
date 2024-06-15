@@ -1,19 +1,23 @@
-import {Product, ProductStatus} from "./Entity";
-import {myDataSource} from "../../Database/Connection";
-import {ProductCreateDTO, ProductUpdateDTO} from "./DTO";
-import {User, UserRole} from "../User/Entity";
-import {plainToClass} from "class-transformer";
-import {Brand} from "../Brand/Entity";
-import {Category} from "../Category/Entity";
-import {typesense} from "../../Typesense/Config";
+import { Product, ProductStatus } from "./Entity";
+import { myDataSource } from "../../Database/Connection";
+import { ProductCreateDTO, ProductUpdateDTO } from "./DTO";
+import { User, UserRole } from "../User/Entity";
+import { plainToClass } from "class-transformer";
+import { Brand } from "../Brand/Entity";
+import { Category } from "../Category/Entity";
+import { typesense } from "../../Typesense/Config";
 
 export const createProductService = async (
   data: ProductCreateDTO,
   user: User,
-  imagePath?: string
+  imagePath?: string,
 ): Promise<{ data: any; code: number }> => {
-  const category = await myDataSource.getRepository(Category).findOneBy({id: data.category});
-  const brand = await myDataSource.getRepository(Brand).findOneBy({id: data.brand});
+  const category = await myDataSource
+    .getRepository(Category)
+    .findOneBy({ id: data.category });
+  const brand = await myDataSource
+    .getRepository(Brand)
+    .findOneBy({ id: data.brand });
 
   if (!user || !category || !brand) {
     return { data: "something wrong with inputs", code: 404 };
@@ -25,14 +29,16 @@ export const createProductService = async (
   product.user = user;
   if (imagePath) product.image = imagePath;
   const result = await myDataSource.getRepository(Product).save(product);
-  const path:number[] = []
-  const categoryParents = await myDataSource.getTreeRepository(Category).findAncestors(category);
-  categoryParents.map((item)=>{
-    path.unshift(item.id)
-  })
-  console.log(path)
-  await typesense.collections("Product").documents().create({
-    id:result.id.toString(),
+  const path: string[] = [];
+  const categoryParents = await myDataSource
+    .getTreeRepository(Category)
+    .findAncestors(category);
+  categoryParents.map((item) => {
+    path.push(item.name);
+  });
+  console.log(path);
+  const typesenseDocument: any = {
+    id: result.id.toString(),
     name: result.name,
     image: result.image,
     description: result.description,
@@ -40,9 +46,16 @@ export const createProductService = async (
     price: result.price,
     status: result.status,
     category: path,
-    brand: result.brand.id,
-    user: result.user.id
+    brand: result.brand.name,
+    user: result.user.id,
+  };
+  path.map((item, index) => {
+    typesenseDocument[`categories.lvl${index}`] = [
+      path.slice(0, index + 1).join(" > "),
+    ];
   });
+  console.log(typesenseDocument);
+  await typesense.collections("Product").documents().create(typesenseDocument);
   return { data: result, code: 201 };
 };
 
@@ -50,12 +63,14 @@ export const getProductsService = async (): Promise<{
   data: any;
   code: number;
 }> => {
-  const result = await myDataSource.getRepository(Product).findBy({status : ProductStatus.ACCEPT});
+  const result = await myDataSource.getRepository(Product).find({
+    relations: ["category", "brand", "user"],
+  });
   return { data: result, code: 200 };
 };
 
 export const getProductService = async (
-  id: number
+  id: number,
 ): Promise<{ data: any; code: number }> => {
   const results = await myDataSource.getRepository(Product).findOneBy({
     id: id,
@@ -67,14 +82,20 @@ export const getProductService = async (
 };
 export const updateProductService = async (
   id: number,
-  user:User,
+  user: User,
   data: ProductUpdateDTO,
-  imagePath: any
+  imagePath: any,
 ): Promise<{ data: any; code: number }> => {
-  console.log(id)
-  const category =  await myDataSource.getRepository(Category).findOneBy({ id: data.category });
-  const brand =  await myDataSource.getRepository(Brand).findOneBy({ id: data.brand });
-  const product = await myDataSource.getRepository(Product).findOneBy({ id: id });
+  console.log(id);
+  const category = await myDataSource
+    .getRepository(Category)
+    .findOneBy({ id: data.category });
+  const brand = await myDataSource
+    .getRepository(Brand)
+    .findOneBy({ id: data.brand });
+  const product = await myDataSource
+    .getRepository(Product)
+    .findOneBy({ id: id });
   if (!user || !product) {
     return { data: "Product or user not found", code: 404 };
   }
@@ -84,8 +105,7 @@ export const updateProductService = async (
   if (data.brand && !brand) {
     return { data: "Brand not found", code: 404 };
   }
-  if (product.user == user || user.role == UserRole.ADMIN)
-  {
+  if (product.user == user || user.role == UserRole.ADMIN) {
     product.name = data.name || product.name;
     product.description = data.description;
     product.year = data.year || product.year;
@@ -95,7 +115,9 @@ export const updateProductService = async (
     if (imagePath) {
       product.image = imagePath;
     }
-    const updatedProduct = await myDataSource.getRepository(Product).save(product);
+    const updatedProduct = await myDataSource
+      .getRepository(Product)
+      .save(product);
     await typesense.collections("Product").documents(id.toString()).update({
       name: updatedProduct.name,
       image: updatedProduct.image,
@@ -107,13 +129,13 @@ export const updateProductService = async (
       brand: updatedProduct.brand.id,
     });
 
-    return {data: updatedProduct, code: 200};
+    return { data: updatedProduct, code: 200 };
   }
 };
 
 export const deleteProductService = async (
   id: number,
-  user:User
+  user: User,
 ): Promise<{ data: any; code: number }> => {
   const findProduct = await myDataSource.getRepository(Product).findOneBy({
     id: id,
@@ -121,17 +143,17 @@ export const deleteProductService = async (
   if (!findProduct) {
     return { data: "not found", code: 404 };
   }
-  const result = await myDataSource.getRepository(Product).findBy({ user,id});
+  const result = await myDataSource.getRepository(Product).findBy({ user, id });
   if (!result) {
     return { data: "you cant delete this product", code: 404 };
   }
-    await myDataSource.getRepository(Product).delete(findProduct);
-    await typesense.collections("Product").documents(id.toString()).delete();
-    return { data: "deleted", code: 200 };
+  await myDataSource.getRepository(Product).delete(findProduct);
+  await typesense.collections("Product").documents(id.toString()).delete();
+  return { data: "deleted", code: 200 };
 };
 
 export const allUserProductsService = async (
-  userId: number
+  userId: number,
 ): Promise<{ data: any; code: number }> => {
   const user = await myDataSource.getRepository(User).findOneBy({
     id: userId,
@@ -139,17 +161,25 @@ export const allUserProductsService = async (
   const result = await myDataSource.getRepository(Product).findBy({ user });
   return { data: result, code: 200 };
 };
-export const changeStatusService = async (id:number,status:ProductStatus): Promise<{ msg: any; code: number }> =>{
+export const changeStatusService = async (
+  id: number,
+  status: ProductStatus,
+): Promise<{ msg: any; code: number }> => {
   try {
-    const product = await myDataSource.getRepository(Product).findOneBy({id:id})
-    if (!product){
-      return {msg:"not found",code:404}
+    const product = await myDataSource
+      .getRepository(Product)
+      .findOneBy({ id: id });
+    if (!product) {
+      return { msg: "not found", code: 404 };
     }
-    product.status = status
-    const result = await myDataSource.getRepository(Product).save(product)
-    await typesense.collections("Product").documents(id.toString()).update({status: product.status})
-    return {msg:result,code:200}
-  }catch (err){
-    return {msg:'something went wrong',code:500}
+    product.status = status;
+    const result = await myDataSource.getRepository(Product).save(product);
+    await typesense
+      .collections("Product")
+      .documents(id.toString())
+      .update({ status: product.status });
+    return { msg: result, code: 200 };
+  } catch (err) {
+    return { msg: "something went wrong", code: 500 };
   }
-}
+};

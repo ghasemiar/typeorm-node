@@ -9,18 +9,18 @@ import TypesenseRoute from "./Modules/Typesense/Routes";
 import BrandRoutes from "./Modules/Brand/Routes";
 import { initializeTypesenseCollection } from "./Typesense/Collections/ProductCollection";
 import cors from "cors";
-import 'dotenv/config'
+import "dotenv/config";
 import path from "path";
-import {createAdmin} from "./Modules/User/AdminSeeder";
-console.log(process.env.TYPESENSE_IP + " " + process.env.TYPESENSE_PORT + " " + process.env.TYPESENSE_PROTOCOL + " " + process.env.TYPESENSE_APIKEY)
-const app = express();
+import { createAdmin } from "./Modules/User/AdminSeeder";
+import syncDatabaseWithTypesense from "./Helper/SyncDatabaseWithTypesense";
 
+const app = express();
 app.use(cors({ credentials: true, origin: true }));
 //initialize database
 myDataSource
   .initialize()
   .then(async () => {
-      await createAdmin()
+    await createAdmin();
     console.log("Data Source has been initialized!");
   })
   .catch((err) => {
@@ -30,7 +30,7 @@ myDataSource
 //Routes
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use('/storage', express.static(path.join(__dirname, 'storage')));
+app.use("/storage", express.static(path.join(__dirname, "storage")));
 app.use("/api", UserRoutes);
 app.use("/api", CategoryRoute);
 app.use("/api", ProductRoute);
@@ -39,9 +39,13 @@ app.use("/api", BrandRoutes);
 
 //initialize typesense
 
-initializeTypesenseCollection().then(response => console.log(response)).catch(err=> console.log(err));
-
-const PORT = 3000;
+initializeTypesenseCollection()
+  .then((response) => console.log(response))
+  .catch((err) => console.log(err));
+syncDatabaseWithTypesense()
+  .then((response) => console.log(response))
+  .catch((err) => console.log(err));
+const PORT = 3001;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
