@@ -1,5 +1,14 @@
-import { IsEmail, IsString, Matches } from "class-validator";
-import { Expose } from "class-transformer";
+import {
+  IsEmail,
+  IsNumber,
+  IsPhoneNumber,
+  IsString,
+  Matches,
+} from "class-validator";
+import { Expose, Transform } from "class-transformer";
+import { User } from "./Entity";
+import { emailReg, phoneReg } from "../../Helper/Regex";
+import { p2e } from "../../Helper/ChangePhone";
 
 export class UserRegisterDTO {
   @Expose()
@@ -9,7 +18,7 @@ export class UserRegisterDTO {
   @IsString()
   username: string;
   @Expose()
-  @Matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/, {
+  @Matches(emailReg, {
     message:
       "Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, and one digit",
   })
@@ -18,6 +27,10 @@ export class UserRegisterDTO {
   @IsString()
   @IsEmail({}, { message: "too long" })
   email: string;
+  @Expose()
+  @Transform(({ obj }) => (obj.phone = p2e(obj.phone)))
+  @Matches(phoneReg)
+  phone: string;
 }
 
 export class UserLoginDto {

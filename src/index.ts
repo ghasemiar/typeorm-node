@@ -7,6 +7,7 @@ import CategoryRoute from "./Modules/Category/Routes";
 import ProductRoute from "./Modules/Product/Routes";
 import TypesenseRoute from "./Modules/Typesense/Routes";
 import BrandRoutes from "./Modules/Brand/Routes";
+import JobRoutes from "./Modules/Job/Routes";
 import { initializeTypesenseCollection } from "./Typesense/Collections/ProductCollection";
 import cors from "cors";
 import "dotenv/config";
@@ -36,15 +37,19 @@ app.use("/api", CategoryRoute);
 app.use("/api", ProductRoute);
 app.use("/api", TypesenseRoute);
 app.use("/api", BrandRoutes);
+app.use("/api", JobRoutes);
 
 //initialize typesense
 
 initializeTypesenseCollection()
-  .then((response) => console.log(response))
+  .then((response) => {
+    console.log(response);
+    // syncDatabaseWithTypesense()
+    //   .then((response) => console.log(response))
+    //   .catch((err) => console.log(err));
+  })
   .catch((err) => console.log(err));
-syncDatabaseWithTypesense()
-  .then((response) => console.log(response))
-  .catch((err) => console.log(err));
+
 const PORT = 3001;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

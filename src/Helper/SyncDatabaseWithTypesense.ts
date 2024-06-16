@@ -8,6 +8,7 @@ export default async function syncDatabaseWithTypesense() {
     relations: ["category", "brand", "user"],
   });
   products.map(async (item) => {
+    console.log(item);
     const path: string[] = [];
     const categoryParents = await myDataSource
       .getTreeRepository(Category)

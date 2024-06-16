@@ -3,8 +3,11 @@ import bcrypt from "bcrypt";
 import { generateToken } from "../../Helper/GnrateToken";
 import { UserLoginDto, UserRegisterDTO } from "./DTO";
 import { myDataSource } from "../../Database/Connection";
+import { hashedPassword } from "../../Helper/HashPassword";
+import { getIrPhone } from "../../Helper/ChangePhone";
+import { plainToClass } from "class-transformer";
 export const loginUserService = async (
-  data: UserLoginDto
+  data: UserLoginDto,
 ): Promise<{ data?: any; code: number; msg: string; token?: string }> => {
   const { username, password } = data;
   //check username exist
@@ -28,7 +31,7 @@ export const loginUserService = async (
 };
 
 export const registerUserService = async (
-  data: UserRegisterDTO
+  data: UserRegisterDTO,
 ): Promise<{ data: any; code: number; msg: string; token?: string }> => {
   //check user exist
   console.log(data);
@@ -46,18 +49,17 @@ export const registerUserService = async (
   if (checkEmail) {
     return { msg: "this email already used", code: 333, data: data };
   }
-  // hash password
-  const hashedPassword = await bcrypt.hash(data.password, 10);
-  data.password = hashedPassword;
   //save user
-  const user = myDataSource.getRepository(User).create(data);
-  const save = await myDataSource.getRepository(User).save(user);
-  const token = generateToken(user);
-  return { data: save, msg: "welcome", code: 201, token: token };
+  const user = plainToClass(User, { ...data });
+  user.phone = getIrPhone(data.phone);
+  user.password = await hashedPassword(data.password);
+  const saveUser = await myDataSource.getRepository(User).save(user);
+  const token = generateToken(saveUser);
+  return { data: saveUser, msg: "welcome", code: 201, token: token };
 };
 
 export const changeRoleService = async (
-  id: number
+  id: number,
 ): Promise<{ code: number; msg: string }> => {
   const user = await myDataSource.getRepository(User).findOneBy({ id });
   if (!user) {
@@ -66,7 +68,3 @@ export const changeRoleService = async (
   user.role = UserRole.ADMIN;
   await myDataSource.getRepository(User).save(user);
 };
-export const checkToken = async (tokne:string)=>{
-  const secretKey = "Rz2aM90g6E0Tsihuod21XyGBeD3345EwMCUyg2H4KbPeWovDhzRHTpCs8KoWrkZO"
-
-}
