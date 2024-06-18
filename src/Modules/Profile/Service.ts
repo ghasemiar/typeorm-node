@@ -1,4 +1,4 @@
-import { Profile } from "./Entity";
+import { Profile, UserStatus } from "./Entity";
 import { myDataSource } from "../../Database/Connection";
 import { ProfileCreateDTO, ProfileUpdateDTO } from "./DTO";
 import { plainToClass } from "class-transformer";
@@ -29,13 +29,14 @@ export const createProfileService = async (
   const user = await myDataSource
     .getRepository(User)
     .findOne({ where: { id: userId }, relations: ["profile"] });
-  if (!user.profile) {
+  if (user.profile) {
     return { data: "در حال حاظر پروفایل برای شما وجود دارد", code: 404 };
   }
   const profile = plainToClass(Profile, { ...data });
   profile.job = job;
   profile.city = city;
   profile.province = province;
+  profile.status = UserStatus.ONLINE;
   const results = await myDataSource.getRepository(Profile).save(profile);
   user.profile = results;
   await myDataSource.getRepository(User).save(user);

@@ -4,8 +4,6 @@ export const p2e = (s: string) =>
 export const getIrPhone = (phone: string): string | null => {
   const irPhoneRegex = /^(\+989|00989|989|9|09)\d{9}$/;
 
-  phone = p2e(phone);
-
   if (!irPhoneRegex.test(phone)) {
     return null;
   }

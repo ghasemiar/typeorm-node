@@ -3,7 +3,6 @@ import {
   authorizeUser,
 } from "../../Middleware/AuthMiddleware";
 import { Router } from "express";
-const router = Router();
 import {
   createProfile,
   deleteProfile,
@@ -12,11 +11,13 @@ import {
 } from "./Controller";
 import { dtoValidationMiddleware } from "../../Middleware/InputValidation";
 import { ProfileCreateDTO, ProfileUpdateDTO } from "./DTO";
-router.get("/profile", getProfile);
+import { Upload } from "../Product/Routes";
+const router = Router();
+router.get("/profile", authenticateUser, getProfile);
 router.post(
   "/profile",
   authenticateUser,
-  authorizeUser,
+  Upload.single("image"),
   dtoValidationMiddleware(ProfileCreateDTO),
   createProfile,
 );

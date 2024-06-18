@@ -10,7 +10,7 @@ import { Transform } from "class-transformer";
 export class ProfileCreateDTO {
   @IsEnum(GenderEnum)
   sex: GenderEnum;
-  @Transform(({ obj }) => (obj.birthday = Number(obj.price)))
+  @Transform(({ obj }) => (obj.birthday = new Date(obj.birthday)))
   @IsDate()
   birthday: Date;
   @IsString()
@@ -35,6 +35,7 @@ export class ProfileCreateDTO {
 export class ProfileUpdateDTO {
   @IsEnum(GenderEnum)
   sex: GenderEnum;
+  @Transform(({ obj }) => (obj.birthday = new Date(obj.birthday)))
   @IsDate()
   birthday: Date;
   @IsString()

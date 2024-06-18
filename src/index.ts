@@ -8,6 +8,8 @@ import ProductRoute from "./Modules/Product/Routes";
 import TypesenseRoute from "./Modules/Typesense/Routes";
 import BrandRoutes from "./Modules/Brand/Routes";
 import JobRoutes from "./Modules/Job/Routes";
+import CountryRoutes from "./Modules/Country/Routes";
+import ProfileRoutes from "./Modules/Profile/Routes";
 import { initializeTypesenseCollection } from "./Typesense/Collections/ProductCollection";
 import cors from "cors";
 import "dotenv/config";
@@ -38,6 +40,8 @@ app.use("/api", ProductRoute);
 app.use("/api", TypesenseRoute);
 app.use("/api", BrandRoutes);
 app.use("/api", JobRoutes);
+app.use("/api", CountryRoutes);
+app.use("/api", ProfileRoutes);
 
 //initialize typesense
 

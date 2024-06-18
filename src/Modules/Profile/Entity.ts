@@ -15,6 +15,10 @@ export enum GenderEnum {
   FEMALE = "female",
   OTHER = "other",
 }
+export enum UserStatus {
+  ONLINE = "online",
+  OFFLINE = "offline",
+}
 @Entity()
 export class Profile {
   @PrimaryGeneratedColumn()
@@ -38,6 +42,8 @@ export class Profile {
   lat: number;
   @Column({ type: "double" })
   lng: number;
+  @Column({ type: "enum", enum: UserStatus, default: UserStatus.ONLINE })
+  status: UserStatus;
   @CreateDateColumn()
   created_at: Date;
   @UpdateDateColumn()

@@ -1,6 +1,13 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  OneToMany,
+  ManyToOne,
+} from "typeorm";
 import { City } from "../City/Entity";
 import { Profile } from "../Profile/Entity";
+import { Country } from "../Country/Entity";
 
 @Entity()
 export class Province {
@@ -14,4 +21,6 @@ export class Province {
   cities: City[];
   @OneToMany(() => Profile, (profile) => profile.province)
   profile: Profile[];
+  @ManyToOne(() => Country, (country) => country.province)
+  country = Country;
 }

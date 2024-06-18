@@ -1,8 +1,4 @@
-import {
-  IsEmail,
-  IsString,
-  Matches,
-} from "class-validator";
+import { IsEmail, IsNumber, IsString, Matches } from "class-validator";
 import { Expose, Transform } from "class-transformer";
 import { emailReg, phoneReg } from "../../Helper/Regex";
 import { p2e } from "../../Helper/ChangePhone";
@@ -25,8 +21,8 @@ export class UserRegisterDTO {
   @IsEmail({}, { message: "too long" })
   email: string;
   @Expose()
-  @Transform(({ obj }) => (obj.phone = p2e(obj.phone)))
-  @Matches(phoneReg)
+  @IsString()
+  @IsString()
   phone: string;
 }
 
