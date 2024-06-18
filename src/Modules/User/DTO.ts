@@ -1,12 +1,9 @@
 import {
   IsEmail,
-  IsNumber,
-  IsPhoneNumber,
   IsString,
   Matches,
 } from "class-validator";
 import { Expose, Transform } from "class-transformer";
-import { User } from "./Entity";
 import { emailReg, phoneReg } from "../../Helper/Regex";
 import { p2e } from "../../Helper/ChangePhone";
 

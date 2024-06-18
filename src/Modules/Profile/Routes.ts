@@ -1,30 +1,31 @@
-import { authenticateUser,authorizeUser } from "../../Middleware/AuthMiddleware";
+import {
+  authenticateUser,
+  authorizeUser,
+} from "../../Middleware/AuthMiddleware";
 import { Router } from "express";
 const router = Router();
 import {
-    getBrands,
-    createBrand,
-    getBrand,
-    deleteBrand,
-    updateBrand,
+  createProfile,
+  deleteProfile,
+  getProfile,
+  updateProfile,
 } from "./Controller";
 import { dtoValidationMiddleware } from "../../Middleware/InputValidation";
-import { BrandCreateDTO, BrandUpdateDTO } from "./DTO";
-router.get("/brand", getBrands);
-router.get("/brand/:id", authenticateUser, getBrand);
+import { ProfileCreateDTO, ProfileUpdateDTO } from "./DTO";
+router.get("/profile", getProfile);
 router.post(
-    "/brand",
-    authenticateUser,
-    authorizeUser,
-    dtoValidationMiddleware(BrandCreateDTO),
-    createBrand
+  "/profile",
+  authenticateUser,
+  authorizeUser,
+  dtoValidationMiddleware(ProfileCreateDTO),
+  createProfile,
 );
 router.put(
-    "/brand/:id",
-    authenticateUser,
-    authorizeUser,
-    dtoValidationMiddleware(BrandUpdateDTO),
-    updateBrand
+  "/profile",
+  authenticateUser,
+  authorizeUser,
+  dtoValidationMiddleware(ProfileUpdateDTO),
+  updateProfile,
 );
-router.delete("/brand/:id", authenticateUser, deleteBrand);
+router.delete("/profile", authenticateUser, deleteProfile);
 export default router;

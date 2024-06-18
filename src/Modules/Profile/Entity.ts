@@ -34,6 +34,10 @@ export class Profile {
   @ManyToOne(() => Job, (job) => job.profile)
   @JoinTable()
   job: Job;
+  @Column({ type: "double" })
+  lat: number;
+  @Column({ type: "double" })
+  lng: number;
   @CreateDateColumn()
   created_at: Date;
   @UpdateDateColumn()
