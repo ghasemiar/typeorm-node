@@ -1,4 +1,4 @@
-import { Profile, UserStatus } from "./Entity";
+import { Profile } from "./Entity";
 import { myDataSource } from "../../Database/Connection";
 import { ProfileCreateDTO, ProfileUpdateDTO } from "./DTO";
 import { plainToClass } from "class-transformer";
@@ -36,7 +36,7 @@ export const createProfileService = async (
   profile.job = job;
   profile.city = city;
   profile.province = province;
-  profile.status = UserStatus.ONLINE;
+  profile.lastActivity = new Date();
   const results = await myDataSource.getRepository(Profile).save(profile);
   user.profile = results;
   await myDataSource.getRepository(User).save(user);
@@ -100,6 +100,7 @@ export const updateProfileService = async (
   profile.job = job;
   profile.city = city;
   profile.province = province;
+  profile.lastActivity = new Date();
   const results = await myDataSource.getRepository(Profile).save(profile);
   return { data: results, code: 200 };
 };

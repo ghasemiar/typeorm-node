@@ -6,8 +6,6 @@ import { myDataSource } from "../../Database/Connection";
 import { hashedPassword } from "../../Helper/HashPassword";
 import { getIrPhone } from "../../Helper/ChangePhone";
 import { plainToClass } from "class-transformer";
-import { Profile, UserStatus } from "../Profile/Entity";
-
 export const loginUserService = async (
   data: UserLoginDto,
 ): Promise<{ data?: any; code: number; msg: string; token?: string }> => {
@@ -31,14 +29,6 @@ export const loginUserService = async (
   }
   //generate token
   const token = generateToken(user);
-  if (user.profile) {
-    const profile = await myDataSource
-      .getRepository(Profile)
-      .findOneBy({ id: user.profile.id });
-    profile.status = UserStatus.ONLINE;
-    await myDataSource.getRepository(Profile).save(profile);
-    return { msg: "welcome back", code: 200, token: token, data: data };
-  }
   return { msg: "welcome back", code: 200, token: token, data: data };
 };
 
@@ -84,17 +74,4 @@ export const changeRoleService = async (
   }
   user.role = UserRole.ADMIN;
   await myDataSource.getRepository(User).save(user);
-};
-export const setUserOffline = async (id: number) => {
-  const user = await myDataSource
-    .getRepository(User)
-    .findOne({ where: { id }, relations: ["profile"] });
-  if (!user.profile) {
-    return { data: "no profile", code: 404 };
-  }
-  const profile = await myDataSource
-    .getRepository(Profile)
-    .findOneBy({ id: user.profile.id });
-  profile.status = UserStatus.ONLINE;
-  await myDataSource.getRepository(Profile).save(profile);
 };

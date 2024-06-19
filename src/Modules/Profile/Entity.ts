@@ -15,19 +15,17 @@ export enum GenderEnum {
   FEMALE = "female",
   OTHER = "other",
 }
-export enum UserStatus {
-  ONLINE = "online",
-  OFFLINE = "offline",
-}
 @Entity()
 export class Profile {
   @PrimaryGeneratedColumn()
   id: number;
   @Column({ type: "enum", enum: GenderEnum, default: GenderEnum.OTHER })
-  sex: string;
+  sex: GenderEnum;
   @Column({ type: "date", nullable: true })
   birthday: Date;
-  @Column({ type: "varchar" })
+  @UpdateDateColumn()
+  lastActivity: Date;
+  @Column({ type: "varchar", nullable: true })
   image: string;
   @ManyToOne(() => Province, (province) => province.profile)
   @JoinTable()
@@ -42,8 +40,6 @@ export class Profile {
   lat: number;
   @Column({ type: "double" })
   lng: number;
-  @Column({ type: "enum", enum: UserStatus, default: UserStatus.ONLINE })
-  status: UserStatus;
   @CreateDateColumn()
   created_at: Date;
   @UpdateDateColumn()
