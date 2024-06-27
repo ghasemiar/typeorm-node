@@ -1,6 +1,6 @@
 import { IsEmail, IsNumber, IsString, Matches } from "class-validator";
 import { Expose, Transform } from "class-transformer";
-import { emailReg, phoneReg } from "../../Helper/Regex";
+import { passwordReg, phoneReg } from "../../Helper/Regex";
 import { p2e } from "../../Helper/ChangePhone";
 
 export class UserRegisterDTO {
@@ -11,7 +11,7 @@ export class UserRegisterDTO {
   @IsString()
   username: string;
   @Expose()
-  @Matches(emailReg, {
+  @Matches(passwordReg, {
     message:
       "Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, and one digit",
   })
