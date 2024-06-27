@@ -10,12 +10,14 @@ import BrandRoutes from "./Modules/Brand/Routes";
 import JobRoutes from "./Modules/Job/Routes";
 import CountryRoutes from "./Modules/Country/Routes";
 import ProfileRoutes from "./Modules/Profile/Routes";
+import ProvinceRoutes from "./Modules/Province/Routes";
+import CityRoutes from "./Modules/City/Routes";
 import { initializeTypesenseCollection } from "./Typesense/Collections/ProductCollection";
 import cors from "cors";
 import "dotenv/config";
 import path from "path";
 import { createAdmin } from "./Modules/User/AdminSeeder";
-import syncDatabaseWithTypesense from "./Helper/SyncDatabaseWithTypesense";
+// import syncDatabaseWithTypesense from "./Helper/SyncDatabaseWithTypesense";
 
 const app = express();
 app.use(cors({ credentials: true, origin: true }));
@@ -41,6 +43,8 @@ app.use("/api", TypesenseRoute);
 app.use("/api", BrandRoutes);
 app.use("/api", JobRoutes);
 app.use("/api", CountryRoutes);
+app.use("/api", ProvinceRoutes);
+app.use("/api", CityRoutes);
 app.use("/api", ProfileRoutes);
 
 //initialize typesense
