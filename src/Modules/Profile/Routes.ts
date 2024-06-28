@@ -11,7 +11,7 @@ import {
 } from "./Controller";
 import { dtoValidationMiddleware } from "../../Middleware/InputValidation";
 import { ProfileCreateDTO, ProfileUpdateDTO } from "./DTO";
-import { Upload } from "../Product/Routes";
+import { Upload } from "../../Helper/Multer";
 const router = Router();
 router.get("/profile", authenticateUser, getProfile);
 router.post(

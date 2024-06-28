@@ -1,7 +1,6 @@
-import { IsEmail, IsNumber, IsString, Matches } from "class-validator";
-import { Expose, Transform } from "class-transformer";
-import { passwordReg, phoneReg } from "../../Helper/Regex";
-import { p2e } from "../../Helper/ChangePhone";
+import { IsEmail, IsString, Matches } from "class-validator";
+import { Expose } from "class-transformer";
+import { passwordReg } from "../../Helper/Regex";
 
 export class UserRegisterDTO {
   @Expose()

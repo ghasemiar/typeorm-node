@@ -10,6 +10,7 @@ export const createProfileService = async (
   data: ProfileCreateDTO,
   userId: number,
 ): Promise<{ data: any; code: number }> => {
+  console.log(data);
   const job = await myDataSource.getRepository(Job).findOneBy({ id: data.job });
   if (!job) {
     return { data: "شغل موجود نیست", code: 404 };

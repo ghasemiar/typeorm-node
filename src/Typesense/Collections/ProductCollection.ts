@@ -44,6 +44,11 @@ export const initializeTypesenseCollection = async () => {
             facet: true,
           },
           {
+            name: "isPublic",
+            type: "bool",
+            facet: true,
+          },
+          {
             name: "category",
             type: "string[]",
             facet: true,

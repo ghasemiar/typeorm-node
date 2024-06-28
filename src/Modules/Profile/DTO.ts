@@ -22,6 +22,9 @@ export class ProfileCreateDTO {
   @Transform(({ obj }) => (obj.city = Number(obj.city)))
   @IsNumber()
   city: number;
+  @Transform(({ obj }) => (obj.country = Number(obj.country)))
+  @IsNumber()
+  country: number;
   @Transform(({ obj }) => (obj.job = Number(obj.job)))
   @IsNumber()
   job: number;

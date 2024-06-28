@@ -8,7 +8,7 @@
 //     name: Joi.string().optional(),
 //     category: Joi.string().optional(),
 // })
-import { IsString, IsNumber, IsOptional } from "class-validator";
+import { IsString, IsNumber, IsOptional, IsBoolean } from "class-validator";
 import { Transform } from "class-transformer";
 export class ProductCreateDTO {
   @IsString()
@@ -20,7 +20,10 @@ export class ProductCreateDTO {
   @IsNumber()
   year: number;
   @IsString()
-  description?: string;
+  description: string;
+  @Transform(({ obj }) => (obj.isPublic = obj.isPublic === "true"))
+  @IsBoolean()
+  isPublic: boolean;
   @Transform(({ obj }) => (obj.category = Number(obj.category)))
   @IsNumber()
   category: number;
@@ -30,7 +33,6 @@ export class ProductCreateDTO {
   @IsString()
   @IsOptional()
   image: string;
-
 }
 export class ProductUpdateDTO {
   @IsString()

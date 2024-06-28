@@ -29,6 +29,8 @@ export class Product {
   image: string;
   @Column({ type: "enum", enum: ProductStatus, default: ProductStatus.PENDING })
   status: ProductStatus;
+  @Column({ type: "boolean", default: false })
+  isPublic: boolean;
   @ManyToOne(() => Category, (category) => category.products)
   @JoinTable()
   category: Category;

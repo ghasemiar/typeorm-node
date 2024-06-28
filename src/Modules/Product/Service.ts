@@ -29,33 +29,34 @@ export const createProductService = async (
   product.user = user;
   if (imagePath) product.image = imagePath;
   const result = await myDataSource.getRepository(Product).save(product);
-  const path: string[] = [];
-  const categoryParents = await myDataSource
-    .getTreeRepository(Category)
-    .findAncestors(category);
-  categoryParents.map((item) => {
-    path.push(item.name);
-  });
-  console.log(path);
-  const typesenseDocument: any = {
-    id: result.id.toString(),
-    name: result.name,
-    image: result.image,
-    description: result.description,
-    year: result.year,
-    price: result.price,
-    status: result.status,
-    category: path,
-    brand: result.brand.name,
-    user: result.user.id,
-  };
-  path.map((item, index) => {
-    typesenseDocument[`categories.lvl${index}`] = [
-      path.slice(0, index + 1).join(" > "),
-    ];
-  });
-  console.log(typesenseDocument);
-  await typesense.collections("Product").documents().create(typesenseDocument);
+  // const path: string[] = [];
+  // const categoryParents = await myDataSource
+  //   .getTreeRepository(Category)
+  //   .findAncestors(category);
+  // categoryParents.map((item) => {
+  //   path.push(item.name);
+  // });
+  // console.log(path);
+  // const typesenseDocument: any = {
+  //   id: result.id.toString(),
+  //   name: result.name,
+  //   image: result.image,
+  //   description: result.description,
+  //   year: result.year,
+  //   price: result.price,
+  //   status: result.status,
+  //   isPublic: result.isPublic,
+  //   category: path,
+  //   brand: result.brand.name,
+  //   user: result.user.id,
+  // };
+  // path.map((item, index) => {
+  //   typesenseDocument[`categories.lvl${index}`] = [
+  //     path.slice(0, index + 1).join(" > "),
+  //   ];
+  // });
+  // console.log(typesenseDocument);
+  // await typesense.collections("Product").documents().create(typesenseDocument);
   return { data: result, code: 201 };
 };
 
@@ -125,6 +126,7 @@ export const updateProductService = async (
       year: updatedProduct.year,
       price: updatedProduct.price,
       status: ProductStatus.PENDING,
+      isPublic: updatedProduct.isPublic,
       category: updatedProduct.category.id,
       brand: updatedProduct.brand.id,
     });
