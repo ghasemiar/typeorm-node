@@ -17,7 +17,8 @@ import cors from "cors";
 import "dotenv/config";
 import path from "path";
 import { createAdmin } from "./Modules/User/AdminSeeder";
-// import syncDatabaseWithTypesense from "./Helper/SyncDatabaseWithTypesense";
+import seedDatabase from "./Helper/TempData";
+import syncDatabaseWithTypesense from "./Helper/SyncDatabaseWithTypesense";
 
 const app = express();
 app.use(cors({ credentials: true, origin: true }));
@@ -26,6 +27,10 @@ myDataSource
   .initialize()
   .then(async () => {
     await createAdmin();
+    // await seedDatabase();
+    // await syncDatabaseWithTypesense()
+    //   .then((response) => console.log(response))
+    //   .catch((err) => console.log(err));
     console.log("Data Source has been initialized!");
   })
   .catch((err) => {
@@ -47,14 +52,13 @@ app.use("/api", ProvinceRoutes);
 app.use("/api", CityRoutes);
 app.use("/api", ProfileRoutes);
 
+// save tempdata in db
+
 //initialize typesense
 
 initializeTypesenseCollection()
   .then((response) => {
     console.log(response);
-    // syncDatabaseWithTypesense()
-    //   .then((response) => console.log(response))
-    //   .catch((err) => console.log(err));
   })
   .catch((err) => console.log(err));
 
