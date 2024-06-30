@@ -124,3 +124,30 @@ export const deleteProfileService = async (
   await myDataSource.getRepository(Profile).delete(find);
   return { data: "delete successfully", code: 200 };
 };
+
+export const getNearbyUserService = async (
+  latitude: number,
+  longitude: number,
+  radius: number,
+): Promise<{ data: any; code: number }> => {
+  const earthRadiusKm = 6371;
+
+  const users = await myDataSource
+    .getRepository(User)
+    .createQueryBuilder("user")
+    .select("user")
+    .addSelect(
+      `(${earthRadiusKm} * acos(
+            cos(radians(:latitude)) * cos(radians(user.latitude)) *
+            cos(radians(user.longitude) - radians(:longitude)) +
+            sin(radians(:latitude)) * sin(radians(user.latitude))
+        ))`,
+      "distance",
+    )
+    .having("distance < :radius", { radius })
+    .setParameters({ latitude, longitude })
+    .orderBy("distance", "ASC")
+    .getMany();
+
+  return { data: users, code: 200 };
+};

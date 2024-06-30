@@ -6,6 +6,7 @@ import { Router } from "express";
 import {
   createProfile,
   deleteProfile,
+  getNearbyUser,
   getProfile,
   updateProfile,
 } from "./Controller";
@@ -29,4 +30,5 @@ router.put(
   updateProfile,
 );
 router.delete("/profile", authenticateUser, deleteProfile);
+router.get("/profile/:id", authenticateUser, getNearbyUser);
 export default router;

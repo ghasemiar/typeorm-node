@@ -1,8 +1,9 @@
-import { Response } from "express";
+import { Request, Response } from "express";
 
 import {
   createProfileService,
   deleteProfileService,
+  getNearbyUserService,
   getProfileService,
   updateProfileService,
 } from "./Service";
@@ -64,6 +65,25 @@ export const deleteProfile = async (
     const { data, code } = await deleteProfileService(req.user.id);
     res.status(code).json(data);
     res.status(204).send();
+  } catch (error: any) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+export const getNearbyUser = async (
+  req: Request,
+  res: Response,
+): Promise<void> => {
+  try {
+    const { latitude, longitude, radius } = req.query;
+    if (!latitude || !longitude || !radius) {
+      res.status(400).send("Missing query parameters");
+    }
+    const lat = parseFloat(latitude as string);
+    const lon = parseFloat(longitude as string);
+    const rad = parseFloat(radius as string);
+    const { data, code } = await getNearbyUserService(lat, lon, rad);
+    res.status(code).json(data);
   } catch (error: any) {
     res.status(500).json({ error: error.message });
   }
